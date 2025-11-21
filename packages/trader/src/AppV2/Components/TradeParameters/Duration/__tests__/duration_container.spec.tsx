@@ -149,8 +149,9 @@ describe('DurationActionSheetContainer', () => {
         expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
             duration_unit: 'm',
             duration: 1,
-            expiry_time: null,
             expiry_type: 'duration',
+            expiry_time: null,
+            expiry_date: null,
         });
     });
 
@@ -164,8 +165,9 @@ describe('DurationActionSheetContainer', () => {
         expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
             duration_unit: 't',
             duration: 5,
-            expiry_time: null,
             expiry_type: 'duration',
+            expiry_time: null,
+            expiry_date: null,
         });
     });
 
@@ -188,8 +190,9 @@ describe('DurationActionSheetContainer', () => {
         expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
             duration_unit: 's',
             duration: 20,
-            expiry_time: null,
             expiry_type: 'duration',
+            expiry_time: null,
+            expiry_date: null,
         });
     });
 
@@ -203,13 +206,15 @@ describe('DurationActionSheetContainer', () => {
         expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
             duration_unit: 'm',
             duration: 60,
-            expiry_time: null,
             expiry_type: 'duration',
+            expiry_time: null,
+            expiry_date: null,
         });
     });
 
     it('should call onChangeMultiple with correct endtime with endtime', async () => {
         default_trade_store.modules.trade.expiry_time = '23:35';
+        const saved_date = new Date().toISOString().slice(0, 10);
 
         renderDurationContainer(
             default_trade_store,
@@ -217,7 +222,7 @@ describe('DurationActionSheetContainer', () => {
             jest.fn(),
             [0, 0],
             jest.fn(),
-            new Date().toISOString().slice(0, 10),
+            saved_date,
             jest.fn(),
             '11:35',
             jest.fn()
@@ -225,6 +230,7 @@ describe('DurationActionSheetContainer', () => {
         await userEvent.click(screen.getByText('Save'));
 
         expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
+            expiry_date: '',
             expiry_time: '11:35',
             expiry_type: 'endtime',
         });

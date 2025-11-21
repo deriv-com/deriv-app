@@ -152,7 +152,10 @@ const DayInput = ({
         }
     }, [response, setExpiryTimeInput, setUnsavedExpiryDateV2]);
 
-    const moment_expiry_date = toMoment(expiry_date);
+    // Use unsaved_expiry_date_v2 if available and valid (user is actively selecting), otherwise fall back to expiry_date from store
+    const current_expiry_date =
+        unsaved_expiry_date_v2 && unsaved_expiry_date_v2 !== '' ? unsaved_expiry_date_v2 : expiry_date || '';
+    const moment_expiry_date = toMoment(current_expiry_date || expiry_date);
     const market_open_datetimes = market_open_times.map(open_time => setTime(moment_expiry_date.clone(), open_time));
     const market_close_datetimes = market_close_times.map(close_time =>
         setTime(moment_expiry_date.clone(), close_time)
@@ -162,7 +165,7 @@ const DayInput = ({
     const adjusted_start_time =
         boundaries.start[0]?.clone().add(5, 'minutes').format('HH:mm') || getClosestTimeToCurrentGMT(5);
 
-    const formatted_date = new Date(unsaved_expiry_date_v2).toLocaleDateString('en-GB', {
+    const formatted_date = new Date(current_expiry_date).toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'short',
         year: 'numeric',
@@ -241,7 +244,8 @@ const DayInput = ({
 
             setUnsavedExpiryDateV2(output);
         } else {
-            setEndTime('');
+            // For future dates, set end_time to end of day (23:59:59) to ensure expiry_type remains 'endtime'
+            setEndTime('23:59:59');
             setUnsavedExpiryDateV2(
                 `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
             );
@@ -350,7 +354,10 @@ const DayInput = ({
                                     });
 
                                     if (end_date !== formatted_current_date) {
-                                        setEndTime('');
+                                        // For future dates, keep end_time as '23:59:59' to ensure expiry_type remains 'endtime'
+                                        if (!end_time) {
+                                            setEndTime('23:59:59');
+                                        }
                                     }
                                     if (timeToMinutes(adjusted_start_time) > timeToMinutes(end_time)) {
                                         setEndTime(adjusted_start_time);

@@ -105,3 +105,14 @@
     padding-inline: 2.4rem;
     border-top: 1px solid var(--border-divider);
 }
+
+.complete-user-profile-modal__eu-company-occupation {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 2.4rem;
+
+    .dc-input {
+        margin-bottom: unset;
+    }
+}

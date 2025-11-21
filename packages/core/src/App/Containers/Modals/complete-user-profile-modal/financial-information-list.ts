@@ -11,7 +11,7 @@ type TFinancialAssessmentQuestion = {
     answers: TFinancialAssessmentAnswer[];
     hide_if: string[];
     question: string;
-    type: 'single_choice' | 'multiple_choice';
+    type: 'single_choice' | 'multiple_choice' | 'free_text';
 };
 
 type TFinancialAssessmentQuestions = {
@@ -104,8 +104,9 @@ export const getSourceOfWealthList = ({ financial_questions }: TGetDropdownList)
 };
 
 export const getOccupationList = ({ financial_questions }: TGetDropdownList) => {
-    if (!financial_questions?.questions?.occupation?.answers) {
+    const occupation_question = financial_questions?.questions?.occupation;
+    if (!occupation_question?.answers || occupation_question.type === 'free_text') {
         return [];
     }
-    return transformAnswersToDropdownList(financial_questions.questions.occupation.answers);
+    return transformAnswersToDropdownList(occupation_question.answers);
 };

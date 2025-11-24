@@ -184,6 +184,7 @@ export default class AccountTransferStore {
                         obj_values.error = AccountTransferGetSelectedError(obj_values.value);
                     }
                     this.setSelectedTo(obj_values);
+                    this.setTransferLimit();
                 }
             }
         }

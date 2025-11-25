@@ -340,7 +340,7 @@ export default class NotificationStore extends BaseStore {
             is_phone_number_verification_enabled &&
             (is_country_code_dropdown_enabled ? carriers_supported : true);
         let has_missing_required_field;
-
+        const { is_complete_user_profile_modal_open } = this.root_store.ui;
         const is_server_down = checkServerMaintenance(website_status);
 
         if (website_status?.message?.length || is_server_down) {
@@ -382,7 +382,7 @@ export default class NotificationStore extends BaseStore {
             if (status?.includes('mt5_additional_kyc_required'))
                 this.addNotificationMessage(this.client_notifications.additional_kyc_info);
 
-            if (status?.includes('update_fa')) {
+            if (status?.includes('update_fa') && !is_complete_user_profile_modal_open) {
                 this.addNotificationMessage(this.client_notifications.update_fa_required());
             } else {
                 this.removeNotificationByKey({ key: this.client_notifications.update_fa_required().key });

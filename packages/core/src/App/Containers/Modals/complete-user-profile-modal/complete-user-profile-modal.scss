@@ -1,3 +1,39 @@
+.complete-user-profile-modal__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2.4rem;
+}
+
+.complete-user-profile-modal__title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.complete-user-profile-modal__list {
+    list-style-type: disc;
+    list-style-position: inside;
+    padding: 0.8rem 1.6rem;
+}
+
+.complete-user-profile-modal__list-item {
+    padding: 0.8rem 0rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    border-bottom: 1px solid var(--border-divider);
+
+    &--text {
+        flex-grow: 1;
+    }
+}
+
+.complete-user-profile-modal__list-item:last-child {
+    border-bottom: none;
+}
+
 .dc-modal-header--complete-user-profile-modal {
     border-bottom: 1px solid var(--border-divider);
 }
@@ -54,6 +90,12 @@
     }
 }
 
+.complete-user-profile-modal__checkbox-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+}
+
 .dc-modal-footer.complete-user-profile-modal__footer {
     position: fixed;
     bottom: 0;
@@ -62,4 +104,15 @@
     width: 100%;
     padding-inline: 2.4rem;
     border-top: 1px solid var(--border-divider);
+}
+
+.complete-user-profile-modal__eu-company-occupation {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 2.4rem;
+
+    .dc-input {
+        margin-bottom: unset;
+    }
 }

@@ -80,7 +80,7 @@ const TradersHubBanners = observer(() => {
                     <Text as='p' size='xs' line_height='s'>
                         <Localize
                             i18n_default_text='Due to a market issue, your trading experience may be affected on symbols such as US stock indices, commodities, and metals.
-Pricing may be unavailable or delayed, and orders may be interrupted or rejected. Trading is suspended for selected instruments until liquidity is restored.'
+Pricing may be unavailable or delayed, and orders may be interrupted or rejected. Trading maybe suspended for selected instruments until liquidity is restored.'
                         />
                     </Text>
                 </div>

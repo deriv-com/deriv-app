@@ -152,7 +152,8 @@ const AppModals = observer(() => {
         has_active_real_account &&
         (!citizen || !date_of_birth || !address_line_1 || !address_city || no_currency);
 
-    const missing_fa = (is_financial_information_incomplete || should_update_fa) && is_eu_user;
+    const missing_fa =
+        (is_financial_information_incomplete || should_update_fa) && is_eu_user && has_active_real_account;
 
     React.useEffect(() => {
         if (is_tnc_needed) {

@@ -34,16 +34,12 @@ type TGetDropdownList = {
 
 export const getAccountOpeningReasonList = () => [
     {
-        text: localize('Hedging'),
-        value: 'Hedging',
+        text: localize('Savings'),
+        value: 'Savings',
     },
     {
-        text: localize('Income Earning'),
-        value: 'Income Earning',
-    },
-    {
-        text: localize('Speculative'),
-        value: 'Speculative',
+        text: localize('Additional revenue'),
+        value: 'Additional revenue',
     },
 ];
 

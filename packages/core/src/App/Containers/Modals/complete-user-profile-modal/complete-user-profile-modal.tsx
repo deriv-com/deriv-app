@@ -25,7 +25,7 @@ const CompleteUserProfileModal = observer(
         const [is_showing_missing_info_form, setShowInfoForm] = useState(false);
 
         const { client, ui } = useStore();
-        const { account_settings, residence } = client;
+        const { account_settings, residence, has_active_real_account } = client;
         const { is_complete_user_profile_modal_open, setShouldShowCompleteUserProfileModal } = ui;
 
         const { data: residenceList } = useResidenceList();
@@ -99,7 +99,7 @@ const CompleteUserProfileModal = observer(
                 setShowInfoForm(true);
                 return;
             }
-            if (need_fa) {
+            if (need_fa && has_active_real_account) {
                 setShowFAForm(true);
                 return;
             }
@@ -139,19 +139,19 @@ const CompleteUserProfileModal = observer(
                         {!personal_done || !fa_done ? (
                             <>
                                 <Text size='xsm' weight='bold'>
-                                    Complete your profile
+                                    <Localize i18n_default_text='Complete your profile' />
                                 </Text>
                                 <Text size='s' color='less-prominent'>
-                                    Provide the following:
+                                    <Localize i18n_default_text='Provide the following:' />
                                 </Text>
                             </>
                         ) : (
                             <>
                                 <Text size='xsm' weight='bold'>
-                                    All set
+                                    <Localize i18n_default_text='All set' />
                                 </Text>
                                 <Text size='s' color='less-prominent'>
-                                    Your details are up to date. You can now continue trading.
+                                    <Localize i18n_default_text='Your details are up to date. You can now continue trading.' />
                                 </Text>
                             </>
                         )}

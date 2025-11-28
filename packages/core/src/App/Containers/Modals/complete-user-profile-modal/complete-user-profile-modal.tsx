@@ -108,7 +108,7 @@ const CompleteUserProfileModal = observer(
         };
 
         const getButtonLabel = () => {
-            if (!personal_done && !fa_done) {
+            if (initial_personal_missing || initial_fa_missing) {
                 return 'Complete now';
             }
             if (!personal_done || !fa_done) {
@@ -141,7 +141,7 @@ const CompleteUserProfileModal = observer(
                                 <Text size='xsm' weight='bold'>
                                     <Localize i18n_default_text='Complete your profile' />
                                 </Text>
-                                <Text size='s' color='less-prominent'>
+                                <Text size='s'>
                                     <Localize i18n_default_text='Provide the following:' />
                                 </Text>
                             </>
@@ -159,6 +159,7 @@ const CompleteUserProfileModal = observer(
                     <ul className='complete-user-profile-modal__list'>
                         {initial_personal_missing && (
                             <li className='complete-user-profile-modal__list-item'>
+                                &bull;
                                 <Text size='s' className='complete-user-profile-modal__list-item--text'>
                                     <Localize i18n_default_text='Personal details' />
                                 </Text>
@@ -167,6 +168,7 @@ const CompleteUserProfileModal = observer(
                         )}
                         {initial_fa_missing && (
                             <li className='complete-user-profile-modal__list-item'>
+                                &bull;
                                 <Text size='s' className='complete-user-profile-modal__list-item--text'>
                                     <Localize i18n_default_text='Financial assessment' />
                                 </Text>

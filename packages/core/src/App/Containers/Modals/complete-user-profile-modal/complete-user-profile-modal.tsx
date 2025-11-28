@@ -108,7 +108,12 @@ const CompleteUserProfileModal = observer(
         };
 
         const getButtonLabel = () => {
-            if (initial_personal_missing || initial_fa_missing) {
+            const is_first_render =
+                (initial_personal_missing ? !personal_done : true) &&
+                (initial_fa_missing ? !fa_done : true) &&
+                (initial_personal_missing || initial_fa_missing);
+
+            if (is_first_render) {
                 return 'Complete now';
             }
             if (!personal_done || !fa_done) {

@@ -114,12 +114,12 @@ const CompleteUserProfileModal = observer(
                 (initial_personal_missing || initial_fa_missing);
 
             if (is_first_render) {
-                return 'Complete now';
+                return localize('Complete now');
             }
             if (!personal_done || !fa_done) {
-                return 'Continue';
+                return localize('Continue');
             }
-            return 'Start';
+            return localize('Start');
         };
 
         return (

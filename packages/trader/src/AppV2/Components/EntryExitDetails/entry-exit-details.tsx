@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { TContractInfo, addComma, formatDate, formatTime, getEndTime } from '@deriv/shared';
+import { TContractInfo, addComma, formatDate, formatTime, getEndTime, isDigitContract } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import EntryExitDetailRow from './entry-exit-details-row';
 import CardWrapper from '../CardWrapper';
@@ -20,8 +20,14 @@ const getDateTimeFromEpoch = (epoch: number) => {
 };
 
 const EntryExitDetails = ({ contract_info }: { contract_info: TContractInfo }) => {
-    const { entry_tick_time, entry_spot_display_value, exit_tick_time, date_start, exit_tick_display_value } =
-        contract_info;
+    const {
+        entry_tick_time,
+        entry_spot_display_value,
+        exit_tick_time,
+        date_start,
+        exit_tick_display_value,
+        contract_type,
+    } = contract_info;
 
     const dateTimes = useMemo(
         () => ({
@@ -35,6 +41,7 @@ const EntryExitDetails = ({ contract_info }: { contract_info: TContractInfo }) =
 
     const entryValue = entry_spot_display_value ? addComma(entry_spot_display_value) : null;
     const exitValue = exit_tick_display_value ? addComma(exit_tick_display_value) : null;
+    const isDigits = isDigitContract(contract_type);
 
     return (
         <CardWrapper title={<Localize i18n_default_text='Entry & exit details' />} className='entry-exit-details'>
@@ -46,7 +53,7 @@ const EntryExitDetails = ({ contract_info }: { contract_info: TContractInfo }) =
                         time={dateTimes.start.time}
                     />
                 )}
-                {dateTimes.entry && entryValue && (
+                {dateTimes.entry && entryValue && !isDigits && (
                     <EntryExitDetailRow
                         label={<Localize i18n_default_text='Entry spot' />}
                         value={entryValue}

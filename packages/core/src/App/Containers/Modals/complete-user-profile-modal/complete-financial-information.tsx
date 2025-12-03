@@ -60,8 +60,8 @@ type TFinancialInformationForm = Omit<SetFinancialAssessmentRequest, 'set_financ
 const CompleteFinancialAssessment = observer(
     ({ account_settings, residenceList, onClose }: TCompleteFinancialAssessment) => {
         const { client, notifications } = useStore();
-        const { setFinancialAndTradingAssessment, is_authentication_needed } = client;
-        const { isMobile, isDesktop } = useDevice();
+        const { setFinancialAndTradingAssessment } = client;
+        const { isDesktop } = useDevice();
         const { refreshNotifications, removeNotificationByKey } = notifications;
         const { data: financial_questions, isLoading: is_questions_loading } = useFinancialAssessmentQuestions();
         const { tin_validation_config, mutate } = useTinValidations();
@@ -340,7 +340,6 @@ const CompleteFinancialAssessment = observer(
 
         if (is_loading || is_questions_loading)
             return <Loading is_fullscreen={false} className='account__initial-loader' />;
-        if (isMobile && is_authentication_needed) onClose();
 
         const setInitialFormData = (): Partial<TFinancialInformationForm> => {
             // Use initial_form_values which already contains merged data from account_settings and financial_assessment_information

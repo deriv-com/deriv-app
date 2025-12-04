@@ -10,7 +10,7 @@ import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 
-import CompleteUserProfile from './complete-user-profile-modal/complete-user-profile-modal';
+import CompleteUserProfileModal from './complete-user-profile-modal/complete-user-profile-modal';
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
 import CooldownWarningModal from './cooldown-warning-modal.jsx';
 import CryptoTransactionProcessingModal from './crypto-transaction-processing-modal';
@@ -90,11 +90,12 @@ const AppModals = observer(() => {
         landing_company_shortcode: active_account_landing_company,
         is_trading_experience_incomplete,
         account_settings,
-        residence,
         accounts,
         loginid,
         is_client_store_initialized,
         has_active_real_account,
+        is_financial_information_incomplete,
+        account_status,
     } = client;
     const { content_flag } = traders_hub;
     const {
@@ -140,6 +141,19 @@ const AppModals = observer(() => {
     const currency = active_account?.currency;
 
     const no_currency = !has_set_currency || (!is_virtual && !currency);
+    const should_update_fa = account_status?.status?.includes('update_fa');
+
+    const { citizen, date_of_birth, address_line_1, address_city } = account_settings;
+
+    const missing_information_account_settings =
+        !has_wallet &&
+        is_logged_in &&
+        is_authorize &&
+        has_active_real_account &&
+        (!citizen || !date_of_birth || !address_line_1 || !address_city || no_currency);
+
+    const missing_fa =
+        (is_financial_information_incomplete || should_update_fa) && is_eu_user && has_active_real_account;
 
     React.useEffect(() => {
         if (is_tnc_needed) {
@@ -156,16 +170,9 @@ const AppModals = observer(() => {
     }, [is_logged_in, is_authorize]);
 
     React.useEffect(() => {
-        if (!is_client_store_initialized || !account_settings || is_tnc_update_modal_open) return;
+        if (!is_client_store_initialized || !account_settings || is_tnc_update_modal_open || !account_status) return;
 
-        const { citizen, date_of_birth, address_line_1, address_city } = account_settings;
-
-        const shouldShow =
-            !has_wallet &&
-            is_logged_in &&
-            is_authorize &&
-            has_active_real_account &&
-            (!citizen || !date_of_birth || !address_line_1 || !address_city || no_currency);
+        const shouldShow = missing_information_account_settings || missing_fa;
 
         if (shouldShow) {
             setShouldShowCompleteUserProfileModal(true);
@@ -180,6 +187,8 @@ const AppModals = observer(() => {
         is_client_store_initialized,
         setShouldShowCompleteUserProfileModal,
         is_tnc_update_modal_open,
+        is_financial_information_incomplete,
+        account_status,
     ]);
 
     const is_onboarding = window.location.href.includes(routes.onboarding);
@@ -288,15 +297,14 @@ const AppModals = observer(() => {
             ComponentToLoad = <TncStatusUpdateModal />;
         }
 
-        if (is_complete_user_profile_modal_open) {
+        if (is_complete_user_profile_modal_open)
             ComponentToLoad = (
-                <CompleteUserProfile
-                    account_settings={account_settings}
-                    residence={residence}
-                    noCurrency={no_currency}
+                <CompleteUserProfileModal
+                    show_missing_fa={missing_fa}
+                    missing_information_account_settings={missing_information_account_settings}
+                    no_currency={no_currency}
                 />
             );
-        }
     }
 
     return (

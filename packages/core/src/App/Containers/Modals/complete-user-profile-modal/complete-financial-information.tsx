@@ -84,6 +84,9 @@ const CompleteFinancialAssessment = observer(
             tin_skipped,
         } = account_settings;
 
+        const filter_tax_identification_number =
+            tax_identification_number?.toLowerCase() === 'approved000' ? '' : tax_identification_number;
+
         const isFieldDisabled = (name: keyof GetSettings): boolean => {
             return !!immutable_fields?.includes(name);
         };
@@ -177,19 +180,23 @@ const CompleteFinancialAssessment = observer(
                         employment_status,
                         account_opening_reason,
                         tax_residence: tax_residence_item?.text || '',
-                        tax_identification_number,
-                        no_tax_information: tin_skipped === 1,
-                        tax_identification_confirm: !!tax_identification_number,
+                        tax_identification_number: filter_tax_identification_number,
+                        no_tax_information:
+                            tin_skipped === 1 &&
+                            shouldHideOccupationField(getTextFromKey('employment_status', employment_status)),
+                        tax_identification_confirm: !!filter_tax_identification_number,
                     });
                 } else {
                     // If no financial assessment data, initialize with account_settings values
                     setFinancialAssessmentInformation({});
                     setInitialFormValues({
                         tax_residence: tax_residence_item?.text || '',
-                        tax_identification_number,
+                        tax_identification_number: filter_tax_identification_number,
                         account_opening_reason,
-                        no_tax_information: tin_skipped === 1,
-                        tax_identification_confirm: !!tax_identification_number,
+                        no_tax_information:
+                            tin_skipped === 1 &&
+                            shouldHideOccupationField(getTextFromKey('employment_status', employment_status)),
+                        tax_identification_confirm: !!filter_tax_identification_number,
                     });
                     setFinancialInformationVersion('');
                 }
@@ -517,7 +524,7 @@ const CompleteFinancialAssessment = observer(
                                                     </Field>
                                                 </div>
                                                 {/* No tax information field */}
-                                                {!!tax_identification_number &&
+                                                {!!filter_tax_identification_number &&
                                                     tin_skipped === 1 &&
                                                     shouldHideOccupationField(
                                                         getTextFromKey('employment_status', values?.employment_status)
@@ -536,7 +543,10 @@ const CompleteFinancialAssessment = observer(
                                                         </div>
                                                     )}
                                                 {/* Tax Residence Field */}
-                                                {!values.no_tax_information && (
+                                                {(!shouldHideOccupationField(
+                                                    getTextFromKey('employment_status', values?.employment_status)
+                                                ) ||
+                                                    !values.no_tax_information) && (
                                                     <>
                                                         <div className='complete-user-profile-modal__bottom-margin'>
                                                             <Text

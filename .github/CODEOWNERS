@@ -35,28 +35,19 @@
 #  (just to make this file easier to understand)
 # ================================================
 
-#  ali-hosseini-deriv
 #  amina-deriv
-#  balakrishna-deriv
-#  dan-deriv
 #  farrah-deriv
 #  habib-deriv
-#  heorhi-deriv
 #  hirad-deriv
-#  jim-deriv
 #  likhith-deriv
 #  matin-deriv
 #  nada-deriv
 #  nijil-deriv
-#  sandeep-deriv
-#  shafin-deriv
 #  vinu-deriv
-#  wojciech-deriv
 #  yashim-deriv
 #  farabi-deriv
 #  maryia-matskevich-deriv
 #  shahzaib-deriv
-#  rupato-deriv
 #  akmal-deriv
 
 ######################################################################################################
@@ -98,71 +89,71 @@
 #  deriv-app/bot
 # ==============================================================
 
-/packages/bot-skeleton/**/*                                     @sandeep-deriv @shafin-deriv @wojciech-deriv
-/packages/bot-web-ui/**/*                                       @sandeep-deriv @shafin-deriv @wojciech-deriv
-/packages/indicators/**/*                                       @sandeep-deriv @shafin-deriv @wojciech-deriv
+/packages/bot-skeleton/**/*                                     @matin-deriv
+/packages/bot-web-ui/**/*                                       @matin-deriv
+/packages/indicators/**/*                                       @matin-deriv
 
 
 # ==============================================================
 #  deriv-app/cashier
 # ==============================================================
 
-/packages/cashier/**/*                                          @heorhi-deriv @nijil-deriv @wojciech-deriv 
+/packages/cashier/**/*                                          @habib-deriv
 
 
 # ==============================================================
 #  deriv-app/cfd
 # ==============================================================
 
-/packages/cfd/**/*                                              @ali-hosseini-deriv @habib-deriv @hirad-deriv
+/packages/cfd/**/*                                              @habib-deriv @hirad-deriv
 
 
 # ==============================================================
 #  deriv-app/core
 # ==============================================================
 
-/packages/core/**/*                                             @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv 
-/packages/shared/**/*                                           @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv 
-/packages/components/**/*                                       @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv 
-/packages/translations/**/*                                     @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv @heorhi-deriv @jim-deriv @vinu-deriv @nada-deriv @hirad-deriv @farabi-deriv @likhith-deriv @maryia-matskevich-deriv @shahzaib-deriv @rupato-deriv @akmal-deriv
-/packages/utils/**/*                                            @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv 
-/packages/hooks/**/*                                            @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv 
-/packages/stores/**/*                                           @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv 
+/packages/core/**/*                                             @amina-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv 
+/packages/shared/**/*                                           @amina-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv
+/packages/components/**/*                                       @amina-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv
+/packages/translations/**/*                                     @amina-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv
+/packages/utils/**/*                                            @amina-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv 
+/packages/hooks/**/*                                            @amina-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv 
+/packages/stores/**/*                                           @amina-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv 
 
 
 # ==============================================================
 #  deriv-app/p2p
 # ==============================================================
 
-/packages/p2p/**/*                                              @ali-hosseini-deriv @farrah-deriv @matin-deriv @nada-deriv
+/packages/p2p/**/*                                              @farrah-deriv @matin-deriv @nada-deriv
 
 
 # ==============================================================
 #  deriv-app/publisher
 # ==============================================================
 
-/packages/publisher/**/*                                        @ali-hosseini-deriv @wojciech-deriv 
+/packages/publisher/**/*                                        @amina-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv
 
 
 # ==============================================================
 #  deriv-app/reports
 # ==============================================================
 
-/packages/reports/**/*                                          @heorhi-deriv @nijil-deriv @vinu-deriv @wojciech-deriv 
+/packages/reports/**/*                                          @amina-deriv @farrah-deriv @matin-deriv @nijil-deriv
 
 
 # ==============================================================
 #  deriv-app/trader
 # ==============================================================
 
-/packages/trader/**/*                                           @nijil-deriv @vinu-deriv @wojciech-deriv 
+/packages/trader/**/*                                           @nijil-deriv @vinu-deriv @matin-deriv 
 
 
 # ==============================================================
 #  deriv-app/wallets
 # ==============================================================
 
-/packages/wallets/**/*                                          @heorhi-deriv @jim-deriv @nijil-deriv @wojciech-deriv 
+/packages/wallets/**/*                                          @amina-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv
 
 
 # ==============================================================
@@ -170,16 +161,16 @@
 #  Deprecated - do not use. For -v2 projects use api-v2. For old projects - do not use api nor api-v2, use old patterns / old hooks. 
 # ==============================================================
 
-/packages/api/**/*                                              @ali-hosseini-deriv @wojciech-deriv
+/packages/api/**/*                                              @amina-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv
 
 # ==============================================================
 #  deriv-app/api-v2
 # ==============================================================
 
-/packages/api-v2/**/*                                           @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv 
+/packages/api-v2/**/*                                           @amina-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv 
 
 # ==============================================================
 #  scripts/check-imports.js 
 # ==============================================================
 
-/scripts/check-imports.js                                       @ali-hosseini-deriv @matin-deriv @wojciech-deriv @yashim-deriv
+/scripts/check-imports.js                                       @amina-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv

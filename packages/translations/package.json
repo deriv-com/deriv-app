@@ -32,7 +32,7 @@
     "dependencies": {
         "commander": "^3.0.2",
         "crc-32": "^1.2.0",
-        "glob": "^7.1.5",
+        "glob": "^9.0.0",
         "i18next": "^22.4.6",
         "prop-types": "^15.7.2",
         "react": "^17.0.2",

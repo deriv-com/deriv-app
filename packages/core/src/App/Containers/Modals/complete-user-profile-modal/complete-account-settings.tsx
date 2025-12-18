@@ -208,6 +208,14 @@ const CompleteAccountSettings = observer(
 
                     await setAccountCurrency(selected_currency_obj.value);
                 }
+
+                const get_settings = await WS.authorized.storage.getSettings();
+                if (get_settings?.error) {
+                    setStatus({ error_message: get_settings?.error?.message || 'An error occurred' });
+                    setSubmitting(false);
+                    return;
+                }
+
                 setShouldShowCompleteUserProfileModal(false);
             } catch (error) {
                 setStatus({ error_message: error.message || 'An error occurred' });

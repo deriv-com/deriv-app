@@ -492,6 +492,7 @@ const CompleteFinancialAssessment = observer(
                                 values,
                                 setFieldValue,
                                 handleChange,
+                                isValid,
                                 setFieldTouched,
                                 validateForm,
                                 setFieldError,
@@ -1223,7 +1224,7 @@ const CompleteFinancialAssessment = observer(
                                         <Modal.Footer className='complete-user-profile-modal__footer'>
                                             <FormSubmitButton
                                                 label={localize('Next')}
-                                                disabled={isSubmitting || !isCurrentStepValid(values)}
+                                                disabled={isSubmitting || !isValid || !isCurrentStepValid(values)}
                                                 is_loading={isSubmitting}
                                                 className='complete-user-profile-modal__submit-button'
                                             />

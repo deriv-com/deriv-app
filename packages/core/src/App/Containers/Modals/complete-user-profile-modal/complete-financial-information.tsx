@@ -181,9 +181,7 @@ const CompleteFinancialAssessment = observer(
                         account_opening_reason,
                         tax_residence: tax_residence_item?.text || '',
                         tax_identification_number: filter_tax_identification_number,
-                        no_tax_information:
-                            tin_skipped === 1 &&
-                            shouldHideOccupationField(getTextFromKey('employment_status', employment_status)),
+                        no_tax_information: tin_skipped === 1 && tax_identification_number === 'Approved000',
                         tax_identification_confirm: !!filter_tax_identification_number,
                     });
                 } else {
@@ -193,9 +191,7 @@ const CompleteFinancialAssessment = observer(
                         tax_residence: tax_residence_item?.text || '',
                         tax_identification_number: filter_tax_identification_number,
                         account_opening_reason,
-                        no_tax_information:
-                            tin_skipped === 1 &&
-                            shouldHideOccupationField(getTextFromKey('employment_status', employment_status)),
+                        no_tax_information: tin_skipped === 1 && filter_tax_identification_number === '',
                         tax_identification_confirm: !!filter_tax_identification_number,
                     });
                     setFinancialInformationVersion('');
@@ -615,7 +611,7 @@ const CompleteFinancialAssessment = observer(
                                                     </Field>
                                                 </div>
                                                 {/* No tax information field */}
-                                                {!!filter_tax_identification_number &&
+                                                {filter_tax_identification_number === '' &&
                                                     tin_skipped === 1 &&
                                                     shouldHideOccupationField(
                                                         getTextFromKey('employment_status', values?.employment_status)

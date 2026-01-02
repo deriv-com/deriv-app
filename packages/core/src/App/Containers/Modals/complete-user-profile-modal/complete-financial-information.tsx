@@ -181,7 +181,9 @@ const CompleteFinancialAssessment = observer(
                         account_opening_reason,
                         tax_residence: tax_residence_item?.text || '',
                         tax_identification_number: filter_tax_identification_number,
-                        no_tax_information: tin_skipped === 1 && filter_tax_identification_number === '',
+                        no_tax_information:
+                            tin_skipped === 1 &&
+                            shouldHideOccupationField(getTextFromKey('employment_status', employment_status)),
                         tax_identification_confirm: !!filter_tax_identification_number,
                     });
                 } else {
@@ -191,7 +193,9 @@ const CompleteFinancialAssessment = observer(
                         tax_residence: tax_residence_item?.text || '',
                         tax_identification_number: filter_tax_identification_number,
                         account_opening_reason,
-                        no_tax_information: tin_skipped === 1 && filter_tax_identification_number === '',
+                        no_tax_information:
+                            tin_skipped === 1 &&
+                            shouldHideOccupationField(getTextFromKey('employment_status', employment_status)),
                         tax_identification_confirm: !!filter_tax_identification_number,
                     });
                     setFinancialInformationVersion('');
@@ -217,6 +221,7 @@ const CompleteFinancialAssessment = observer(
         ) => {
             try {
                 const settings_payload = {
+                    employment_status: getTextFromKey('employment_status', values.employment_status as string),
                     account_opening_reason: values.account_opening_reason,
                     tax_residence: taxResidenceItem(values.tax_residence)?.value || values.tax_residence,
                     tax_identification_number: values.tax_identification_number,
@@ -923,6 +928,7 @@ const CompleteFinancialAssessment = observer(
                                                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                                                     setFieldValue('company', e.target.value, false);
                                                                 }}
+                                                                value={values.company}
                                                             />
                                                             -
                                                             <FormInputField
@@ -934,6 +940,7 @@ const CompleteFinancialAssessment = observer(
                                                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                                                     setFieldValue('position', e.target.value, false);
                                                                 }}
+                                                                value={values.position}
                                                             />
                                                         </div>
                                                     ) : (

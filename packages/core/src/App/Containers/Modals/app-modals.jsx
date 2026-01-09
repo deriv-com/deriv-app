@@ -195,6 +195,7 @@ const AppModals = observer(() => {
 
     const should_show_trading_assessment_existing_user_form =
         is_logged_in &&
+        !is_complete_user_profile_modal_open &&
         active_account_landing_company === 'maltainvest' &&
         !is_trading_assessment_for_new_user_enabled &&
         is_trading_experience_incomplete &&

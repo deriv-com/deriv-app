@@ -22,10 +22,16 @@ const VerificationDocsListModalContent = observer(() => {
     } = useStore();
     const { isMobile } = useDevice();
     const { client_kyc_status, short_code } = useGetStatus();
-    const { is_selected_MT5_account_created } = useIsSelectedMT5AccountCreated();
+    const { is_selected_MT5_account_created, existing_account_status, existing_account, available_account_to_create } =
+        useIsSelectedMT5AccountCreated();
     if (!client_kyc_status) return null;
     const { poi_status, poa_status, valid_tin, required_tin } = client_kyc_status;
     const is_tin_required = required_tin === 1 && valid_tin === 0;
+    console.log(short_code, ' shortcode');
+    console.log(available_account_to_create, ' available_account_to_create');
+    console.log(existing_account, ' existing_account');
+    console.log(existing_account_status, ' existing_account_status');
+    console.log(is_selected_MT5_account_created, ' is_selected_MT5_account_created');
 
     const items: TItems[] = [
         poi_status && {

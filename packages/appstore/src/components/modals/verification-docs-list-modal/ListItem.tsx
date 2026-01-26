@@ -78,6 +78,7 @@ const ListItem = observer(({ id, text, status, shortcode, route }: TListItemProp
         const platformConfig = urlParams.get('platform') ?? window.sessionStorage.getItem('config.platform');
         const platform = platformConfig ?? (is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
         const jurisdiction = shortcode;
+        console.log(jurisdiction, ' jurisdiction');
 
         const params = {
             platform,

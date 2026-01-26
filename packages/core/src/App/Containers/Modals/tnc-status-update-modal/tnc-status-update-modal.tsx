@@ -37,12 +37,7 @@ const TncStatusUpdateModal = observer(() => {
                         <Localize
                             i18n_default_text='To continue trading, review and accept our updated <0>terms and conditions</0>. Not accepting will lead to restricted access to your account. Need help? Contact us via <1>live chat</1>.'
                             components={[
-                                <StaticUrl
-                                    key={0}
-                                    className='link'
-                                    href='terms-and-conditions'
-                                    is_eu_url={!is_cr_account}
-                                />,
+                                <StaticUrl key={0} className='link' href='terms-and-conditions' />,
                                 <a
                                     key={1}
                                     className='link'

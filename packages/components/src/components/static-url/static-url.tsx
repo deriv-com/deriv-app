@@ -8,10 +8,10 @@ type TStaticUrl = React.HTMLAttributes<HTMLAnchorElement> & {
     is_eu_url?: boolean;
 };
 
-const StaticUrl = ({ href, is_document, is_eu_url = false, children = null, ...props }: TStaticUrl) => {
+const StaticUrl = ({ href, is_document, children = null, ...props }: TStaticUrl) => {
     const getHref = () => {
         setUrlLanguage(getLanguage());
-        return getStaticUrl(href, is_document, is_eu_url);
+        return getStaticUrl(href, is_document);
     };
 
     return (

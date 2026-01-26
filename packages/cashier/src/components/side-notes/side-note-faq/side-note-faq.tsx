@@ -174,9 +174,7 @@ const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
             <Text size='xxs'>
                 <Localize
                     i18n_default_text='<0>View more</0>'
-                    components={[
-                        <StaticUrl key={0} className='link' href='help-centre' is_document={false} is_eu_url={is_eu} />,
-                    ]}
+                    components={[<StaticUrl key={0} className='link' href='help-centre' is_document={false} />]}
                 />
             </Text>
         </SideNote>

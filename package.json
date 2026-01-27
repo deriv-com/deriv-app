@@ -30,6 +30,10 @@
         },
         "@storybook/builder-webpack5": {
             "webpack-dev-middleware": ">=7.1.0"
+        },
+        "@typescript-eslint/utils": "7.18.0",
+        "eslint-import-resolver-typescript": {
+            "@typescript-eslint/utils": "7.18.0"
         }
     },
     "devDependencies": {

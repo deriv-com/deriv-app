@@ -39,7 +39,7 @@
         "@deriv-com/auth-client": "1.5.2",
         "@deriv/components": "^1.0.0",
         "@deriv/hooks": "^1.0.0",
-        "@deriv/quill-icons": "2.2.1",
+        "@deriv/quill-icons": "2.4.14",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",

@@ -22,7 +22,8 @@ const VerificationDocsListModalContent = observer(() => {
     } = useStore();
     const { isMobile } = useDevice();
     const { client_kyc_status } = useGetStatus();
-    const { is_selected_MT5_account_created, existing_account } = useIsSelectedMT5AccountCreated();
+    const { is_selected_MT5_account_created, existing_account, available_account_to_create } =
+        useIsSelectedMT5AccountCreated();
     if (!client_kyc_status) return null;
     const { poi_status, poa_status, valid_tin, required_tin } = client_kyc_status;
     const is_tin_required = required_tin === 1 && valid_tin === 0;
@@ -32,14 +33,14 @@ const VerificationDocsListModalContent = observer(() => {
             id: 'identity',
             text: 'Proof of identity',
             status: poi_status,
-            shortcode: existing_account?.landing_company_short,
+            shortcode: existing_account?.landing_company_short ?? available_account_to_create?.shortcode,
             route: routes.proof_of_identity,
         },
         poa_status && {
             id: 'address',
             text: 'Proof of address',
             status: poa_status,
-            shortcode: existing_account?.landing_company_short,
+            shortcode: existing_account?.landing_company_short ?? available_account_to_create?.shortcode,
             route: routes.proof_of_address,
         },
         is_tin_required && {

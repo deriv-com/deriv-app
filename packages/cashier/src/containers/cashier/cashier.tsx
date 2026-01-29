@@ -13,6 +13,7 @@ import {
 } from '@deriv/hooks';
 import {
     getActivePlatform,
+    getDomainUrl,
     getSelectedRoute,
     matchRoute,
     platform_name,
@@ -94,8 +95,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const { isSuccess } = useAuthorize();
     const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
 
-    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
-    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+    const PRODUCTION_REDIRECT_URL = `https://hub.${getDomainUrl()}/tradershub`;
+    const STAGING_REDIRECT_URL = `https://staging-hub.${getDomainUrl()}/tradershub`;
 
     const onClickClose = () => {
         const pathname = getActivePlatform(common.app_routing_history);

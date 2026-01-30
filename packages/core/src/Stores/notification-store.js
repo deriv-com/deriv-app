@@ -1173,12 +1173,7 @@ export default class NotificationStore extends BaseStore {
                     <Localize
                         i18n_default_text="We've updated our <0>terms and conditions</0>. To continue trading, you must review and accept the updated terms. You'll be prompted to accept them starting [<1>{{next_prompt_date}}</1>]."
                         components={[
-                            <StaticUrl
-                                key={0}
-                                className='link'
-                                href='terms-and-conditions'
-                                is_eu_url={!is_cr_account}
-                            />,
+                            <StaticUrl key={0} className='link' href='terms-and-conditions' />,
                             <Text key={1} size='xs' weight='bold' />,
                         ]}
                         values={{ next_prompt_date: formatDate(next_prompt_date, 'DD MMM YYYY') }}

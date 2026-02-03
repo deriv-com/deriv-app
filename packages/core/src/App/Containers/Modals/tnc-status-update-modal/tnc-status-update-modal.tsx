@@ -40,7 +40,8 @@ const TncStatusUpdateModal = observer(() => {
                                 <StaticUrl
                                     key={0}
                                     className='link'
-                                    href={!is_cr_account ? 'eu/terms-and-conditions' : 'terms-and-conditions'}
+                                    href='terms-and-conditions'
+                                    is_eu_url={!is_cr_account}
                                 />,
                                 <a
                                     key={1}

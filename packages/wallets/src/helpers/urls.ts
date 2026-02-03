@@ -112,8 +112,13 @@ export const isProduction = () => {
 /**
  * @deprecated Please use 'URLUtils.getDerivStaticURL' from '@deriv-com/utils' instead of this.
  */
-export const getStaticUrl = (path = '', language = defaultLanguage?.toLowerCase(), isDocument = false) => {
-    const host = derivUrls.DERIV_COM_PRODUCTION;
+export const getStaticUrl = (
+    path = '',
+    language = defaultLanguage?.toLowerCase(),
+    isDocument = false,
+    isEuUrl = false
+) => {
+    const host = isEuUrl ? derivUrls.DERIV_COM_PRODUCTION_EU : derivUrls.DERIV_COM_PRODUCTION;
     let lang = language;
 
     if (lang && lang !== 'en') {

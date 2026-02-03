@@ -1295,7 +1295,13 @@ export default class NotificationStore extends BaseStore {
                 message: (
                     <Localize
                         i18n_default_text='Please accept our <0>updated Terms and Conditions</0> to proceed.'
-                        components={[<StaticUrl key={0} className='link' href='terms-and-conditions' />]}
+                        components={[
+                            <StaticUrl
+                                key={0}
+                                className='link'
+                                href={!is_cr_account ? 'eu/terms-and-conditions' : 'terms-and-conditions'}
+                            />,
+                        ]}
                     />
                 ),
                 type: 'warning',

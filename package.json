@@ -15,9 +15,6 @@
         "lodash": "^4.17.19",
         "braces": "^3.0.3",
         "axios": "^1.8.2",
-        "@storybook/core-common": {
-            "braces": "^3.0.3"
-        },
         "svg-baker": {
             "braces": "^3.0.3"
         },
@@ -25,12 +22,6 @@
             "braces": "^3.0.3"
         },
         "webpack-dev-middleware": ">=7.1.0",
-        "@storybook/manager-webpack5": {
-            "webpack-dev-middleware": ">=7.1.0"
-        },
-        "@storybook/builder-webpack5": {
-            "webpack-dev-middleware": ">=7.1.0"
-        },
         "@typescript-eslint/utils": "7.18.0",
         "eslint-import-resolver-typescript": {
             "@typescript-eslint/utils": "7.18.0"
@@ -81,7 +72,6 @@
         "nx": "19.8.4",
         "postcss": "^8.4.24",
         "prettier": "^3.0.0",
-        "storybook": "^8.3.5",
         "stylelint": "^13.13.1",
         "stylelint-config-prettier": "^8.0.2",
         "stylelint-formatter-pretty": "^2.1.1",
@@ -106,7 +96,6 @@
         "build:local": "f () { nx run-many --target=build --projects=@deriv/bot-web-ui,@deriv/trader --parallel=2 ;}; f",
         "build:travis": "nx run-many --projects=@deriv/shared,@deriv/components,@deriv/translations,@deriv/cashier,@deriv/account,@deriv/cfd,@deriv/reports --target=build:travis",
         "build:prod": "export NODE_ENV=staging && npm run build:all && export NODE_ENV=",
-        "build:storybook": "cd packages/components && sb build --output-dir .out",
         "build:gh-pages": "f () { nx run-many --target=build --projects=@deriv/components && nx run-many --target=build --projects=@deriv/cashier,@deriv/account,@deriv/cfd,@deriv/reports && npm run build:local $1 ;}; f",
         "check-imports": "node ./scripts/check-imports.js",
         "clean": "echo \"Remove $(git rev-parse --show-toplevel)/node_modules\" && lerna clean && rm -rf \"$(git rev-parse --show-toplevel)/node_modules\"",

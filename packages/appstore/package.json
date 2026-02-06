@@ -19,9 +19,7 @@
         "deploy:folder": "echo \"No deploy:folder specified\"",
         "deploy:staging": "echo \"No deploy:staging specified\"",
         "deploy:production": "echo \"No deploy:production specified\"",
-        "test:eslint": "eslint \"./src/**/*.?(ts|tsx|js|jsx)\"",
-        "storybook": "start-storybook -p 6006",
-        "storybook:build": "build-storybook --output-dir .out"
+        "test:eslint": "eslint \"./src/**/*.?(ts|tsx|js|jsx)\""
     },
     "author": "Deriv",
     "license": "Apache-2.0",
@@ -53,12 +51,6 @@
         "@babel/preset-react": "^7.24.7",
         "@deriv/api-types": "1.0.172",
         "@deriv/publisher": "^0.0.1-beta4",
-        "@storybook/addon-docs": "^8.3.5",
-        "@storybook/addon-essentials": "^8.3.5",
-        "@storybook/addon-links": "^8.3.5",
-        "@storybook/builder-webpack5": "^8.3.5",
-        "@storybook/manager-webpack5": "6.5.10",
-        "@storybook/react": "^8.0.0",
         "@testing-library/react": "^12.1.5",
         "@testing-library/jest-dom": "^5.12.0",
         "@testing-library/user-event": "^13.5.0",

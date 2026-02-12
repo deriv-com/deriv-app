@@ -85,6 +85,7 @@
         "@types/react-virtualized": "^9.21.21",
         "dotenv-webpack": "^8.0.1",
         "eslint": "^8.57.1",
+        "eslint-plugin-jest-dom": "^5.5.0",
         "husky": "^7.0.0",
         "jest": "^29.7.0",
         "jest-chain": "^1.1.6",

@@ -6,8 +6,8 @@ on:
 permissions:
   contents: read
 jobs:
-  build_and_test:
-    name: Build And Test
+  setup:
+    name: Setup & Install Dependencies
     runs-on: Runner_8cores_Deriv-app
     permissions:
       contents: read
@@ -18,34 +18,139 @@ jobs:
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
     - name: Setup Node
       uses: "./.github/actions/setup_node"
-    - name: Check imports
-      run: npm run check-imports
     - name: Install dependencies
       uses: "./.github/actions/npm_install_from_cache"
-    # - name: Invalidate NPM Cache
-    #   if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    #   uses: "./.github/actions/invalidate_npm_cache"
+    - name: Upload node_modules as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: node-modules
+        path: |
+          node_modules
+          packages/*/node_modules
+        retention-days: 1
+
+  build:
+    name: Build Packages
+    runs-on: Runner_8cores_Deriv-app
+    needs: setup
+    permissions:
+      contents: read
+      actions: write
+    environment: Preview
+    steps:
+    - name: Checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+    - name: Setup Node
+      uses: "./.github/actions/setup_node"
+    - name: Download dependencies
+      uses: actions/download-artifact@v4
+      with:
+        name: node-modules
     - name: Build
       uses: "./.github/actions/build"
-    - name: Check TypeScript for @deriv/api
-      run: npm exec tsc -- --project packages/api/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/api-v2
-      run: npm exec tsc -- --project packages/api-v2/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/hooks
-      run: npm exec tsc -- --project packages/hooks/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/utils
-      run: npm exec tsc -- --project packages/utils/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/stores
-      run: npm exec tsc -- --project packages/stores/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/wallets
-      run: npm exec tsc -- --project packages/wallets/tsconfig.json -noEmit
-    - name: Check ESLint for @deriv/wallets
-      run: npm exec eslint -- --fix --ignore-path packages/wallets/.eslintignore --config packages/wallets/.eslintrc.js packages/wallets
-    - name: Check Stylelint for @deriv/wallets
-      run: npm exec stylelint -- packages/wallets/**/*.scss
-    - name: Check tests for @deriv/hooks
-      run: bash ./scripts/check-tests.sh packages/hooks/src
-    - name: Check tests for @deriv/utils
-      run: bash ./scripts/check-tests.sh packages/utils/src
-    - name: Run tests
-      run: npm run test:ci
+
+  typecheck:
+    name: TypeScript Check (${{ matrix.package }})
+    runs-on: Runner_8cores_Deriv-app
+    needs: setup
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [api, api-v2, hooks, utils, stores, wallets]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+    - name: Setup Node
+      uses: "./.github/actions/setup_node"
+    - name: Download dependencies
+      uses: actions/download-artifact@v4
+      with:
+        name: node-modules
+    - name: Check TypeScript for @deriv/${{ matrix.package }}
+      run: npm exec tsc -- --project packages/${{ matrix.package }}/tsconfig.json -noEmit
+
+  lint:
+    name: Lint (${{ matrix.check.name }})
+    runs-on: Runner_8cores_Deriv-app
+    needs: setup
+    strategy:
+      fail-fast: false
+      matrix:
+        check:
+          - name: stylelint
+            cmd: npm run test:stylelint
+          - name: eslint-all
+            cmd: npm run test:eslint-all
+          - name: wallets-eslint
+            cmd: npm exec eslint -- --fix --ignore-path packages/wallets/.eslintignore --config packages/wallets/.eslintrc.js packages/wallets
+          - name: wallets-stylelint
+            cmd: npm exec stylelint -- packages/wallets/**/*.scss
+          - name: check-imports
+            cmd: npm run check-imports
+    steps:
+    - name: Checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+    - name: Setup Node
+      uses: "./.github/actions/setup_node"
+    - name: Download dependencies
+      uses: actions/download-artifact@v4
+      with:
+        name: node-modules
+    - name: Run ${{ matrix.check.name }}
+      run: ${{ matrix.check.cmd }}
+
+  test_checks:
+    name: Test File Check (${{ matrix.package }})
+    runs-on: Runner_8cores_Deriv-app
+    needs: setup
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [hooks, utils]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+    - name: Check tests for @deriv/${{ matrix.package }}
+      run: bash ./scripts/check-tests.sh packages/${{ matrix.package }}/src
+
+  test:
+    name: Jest Tests (Shard ${{ matrix.shard }}/4)
+    runs-on: Runner_8cores_Deriv-app
+    needs: [setup, build]
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+    - name: Setup Node
+      uses: "./.github/actions/setup_node"
+    - name: Download dependencies
+      uses: actions/download-artifact@v4
+      with:
+        name: node-modules
+    - name: Run Jest tests (shard ${{ matrix.shard }})
+      env:
+        SHARD_INDEX: ${{ matrix.shard }}
+        SHARD_COUNT: 4
+        JEST_MAX_WORKERS: 90%
+      run: npm run test:shard
+
+  all_checks_passed:
+    name: All Checks Passed
+    runs-on: ubuntu-latest
+    needs: [build, typecheck, lint, test_checks, test]
+    if: always()
+    steps:
+    - name: Check all jobs succeeded
+      run: |
+        if [[ "${{ contains(needs.*.result, 'failure') }}" == "true" ]]; then
+          echo "One or more checks failed"
+          exit 1
+        fi
+        if [[ "${{ contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
+          echo "One or more checks were cancelled"
+          exit 1
+        fi
+        echo "All checks passed!"

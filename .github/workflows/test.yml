@@ -6,8 +6,8 @@ on:
 permissions:
   contents: read
 jobs:
-  setup:
-    name: Setup & Install Dependencies
+  build:
+    name: Build Packages
     runs-on: Runner_8cores_Deriv-app
     permissions:
       contents: read
@@ -20,39 +20,12 @@ jobs:
       uses: "./.github/actions/setup_node"
     - name: Install dependencies
       uses: "./.github/actions/npm_install_from_cache"
-    - name: Upload node_modules as artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: node-modules
-        path: |
-          node_modules
-          packages/*/node_modules
-        retention-days: 1
-
-  build:
-    name: Build Packages
-    runs-on: Runner_8cores_Deriv-app
-    needs: setup
-    permissions:
-      contents: read
-      actions: write
-    environment: Preview
-    steps:
-    - name: Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-    - name: Setup Node
-      uses: "./.github/actions/setup_node"
-    - name: Download dependencies
-      uses: actions/download-artifact@v4
-      with:
-        name: node-modules
     - name: Build
       uses: "./.github/actions/build"
 
   typecheck:
     name: TypeScript Check (${{ matrix.package }})
     runs-on: Runner_8cores_Deriv-app
-    needs: setup
     strategy:
       fail-fast: false
       matrix:
@@ -62,17 +35,14 @@ jobs:
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
     - name: Setup Node
       uses: "./.github/actions/setup_node"
-    - name: Download dependencies
-      uses: actions/download-artifact@v4
-      with:
-        name: node-modules
+    - name: Install dependencies
+      uses: "./.github/actions/npm_install_from_cache"
     - name: Check TypeScript for @deriv/${{ matrix.package }}
       run: npm exec tsc -- --project packages/${{ matrix.package }}/tsconfig.json -noEmit
 
   lint:
     name: Lint (${{ matrix.check.name }})
     runs-on: Runner_8cores_Deriv-app
-    needs: setup
     strategy:
       fail-fast: false
       matrix:
@@ -92,17 +62,14 @@ jobs:
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
     - name: Setup Node
       uses: "./.github/actions/setup_node"
-    - name: Download dependencies
-      uses: actions/download-artifact@v4
-      with:
-        name: node-modules
+    - name: Install dependencies
+      uses: "./.github/actions/npm_install_from_cache"
     - name: Run ${{ matrix.check.name }}
       run: ${{ matrix.check.cmd }}
 
   test_checks:
     name: Test File Check (${{ matrix.package }})
     runs-on: Runner_8cores_Deriv-app
-    needs: setup
     strategy:
       fail-fast: false
       matrix:
@@ -112,11 +79,12 @@ jobs:
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
     - name: Check tests for @deriv/${{ matrix.package }}
       run: bash ./scripts/check-tests.sh packages/${{ matrix.package }}/src
+      shell: bash
 
   test:
     name: Jest Tests (Shard ${{ matrix.shard }}/4)
     runs-on: Runner_8cores_Deriv-app
-    needs: [setup, build]
+    needs: build
     strategy:
       fail-fast: false
       matrix:
@@ -126,10 +94,8 @@ jobs:
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
     - name: Setup Node
       uses: "./.github/actions/setup_node"
-    - name: Download dependencies
-      uses: actions/download-artifact@v4
-      with:
-        name: node-modules
+    - name: Install dependencies
+      uses: "./.github/actions/npm_install_from_cache"
     - name: Run Jest tests (shard ${{ matrix.shard }})
       env:
         SHARD_INDEX: ${{ matrix.shard }}

@@ -22,10 +22,19 @@ jobs:
       uses: "./.github/actions/npm_install_from_cache"
     - name: Build
       uses: "./.github/actions/build"
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-output
+        path: |
+          packages/*/dist
+          packages/components/src/components/icon/icons-manifest.ts
+        retention-days: 1
 
   typecheck:
     name: TypeScript Check (${{ matrix.package }})
     runs-on: Runner_8cores_Deriv-app
+    needs: build
     strategy:
       fail-fast: false
       matrix:
@@ -37,12 +46,17 @@ jobs:
       uses: "./.github/actions/setup_node"
     - name: Install dependencies
       uses: "./.github/actions/npm_install_from_cache"
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-output
     - name: Check TypeScript for @deriv/${{ matrix.package }}
       run: npm exec tsc -- --project packages/${{ matrix.package }}/tsconfig.json -noEmit
 
   lint:
     name: Lint (${{ matrix.check.name }})
     runs-on: Runner_8cores_Deriv-app
+    needs: build
     strategy:
       fail-fast: false
       matrix:
@@ -64,12 +78,17 @@ jobs:
       uses: "./.github/actions/setup_node"
     - name: Install dependencies
       uses: "./.github/actions/npm_install_from_cache"
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-output
     - name: Run ${{ matrix.check.name }}
       run: ${{ matrix.check.cmd }}
 
   test_checks:
     name: Test File Check (${{ matrix.package }})
     runs-on: Runner_8cores_Deriv-app
+    needs: build
     strategy:
       fail-fast: false
       matrix:
@@ -96,6 +115,10 @@ jobs:
       uses: "./.github/actions/setup_node"
     - name: Install dependencies
       uses: "./.github/actions/npm_install_from_cache"
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-output
     - name: Run Jest tests (shard ${{ matrix.shard }})
       env:
         SHARD_INDEX: ${{ matrix.shard }}

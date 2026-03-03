@@ -195,6 +195,7 @@ export default class UIStore extends BaseStore {
 
     // complete user profile modal
     is_complete_user_profile_modal_open = false;
+    is_tax_info_modal_open = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -307,6 +308,7 @@ export default class UIStore extends BaseStore {
             is_tnc_update_modal_open: observable,
             isUrlUnavailableModalVisible: observable,
             is_complete_user_profile_modal_open: observable,
+            is_tax_info_modal_open: observable,
             manage_real_account_tab_index: observable,
             modal_index: observable,
             notification_messages_ui: observable,
@@ -450,6 +452,7 @@ export default class UIStore extends BaseStore {
             setShouldShowCryptoTransactionProcessingModal: action.bound,
             setShouldShowSameDOBPhoneModal: action.bound,
             setShouldShowCompleteUserProfileModal: action.bound,
+            setShouldShowTaxInfoModal: action.bound,
             field_ref_to_focus: observable,
             setFieldRefToFocus: action.bound,
             toggleTncUpdateModal: action.bound,
@@ -1052,5 +1055,9 @@ export default class UIStore extends BaseStore {
 
     setShouldShowCompleteUserProfileModal(value) {
         this.is_complete_user_profile_modal_open = value;
+    }
+
+    setShouldShowTaxInfoModal(value) {
+        this.is_tax_info_modal_open = value;
     }
 }

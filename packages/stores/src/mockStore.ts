@@ -534,7 +534,9 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleTncUpdateModal: jest.fn(),
             setIsWalletsOnboardingTourGuideVisible: jest.fn(),
             is_complete_user_profile_modal_open: false,
+            is_tax_info_modal_open: false,
             setShouldShowCompleteUserProfileModal: jest.fn(),
+            setShouldShowTaxInfoModal: jest.fn(),
         },
         traders_hub: {
             getAccount: jest.fn(),

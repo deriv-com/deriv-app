@@ -152,7 +152,11 @@ const TaxInfoModal = observer(
 
         /** Determine what the next step should be */
         const getNextStep = (): TModalView | 'submit' => {
-            if (current_view === 'place_of_birth') return 'tax_info';
+            if (current_view === 'place_of_birth') {
+                // Skip tax_info step if neither TIN nor tax_residence update is needed
+                if (needs_update_tin || needs_update_tax_residence) return 'tax_info';
+                return 'submit';
+            }
             if (current_view === 'tax_info') {
                 if (tax_residence_differs) return 'tax_residence_justification';
                 return 'submit';

@@ -42,7 +42,7 @@
         "@deriv/translations": "^1.0.0",
         "blockly": "^10.4.3",
         "file-saver": "^2.0.2",
-        "immutable": "^3.8.2",
+        "immutable": "^5.1.5",
         "localforage": "^1.9.0",
         "lz-string": "^1.4.4",
         "mobx": "^6.6.1",

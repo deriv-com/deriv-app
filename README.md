@@ -38,7 +38,7 @@ This repository contains the various platforms of the Deriv application.
 
 [comment]: <> (TODO: Refactor Clean Project to be under usage)
 
-## Pre-installation
+## Pre-installation:
 
 Before running or contribute to this project, you need to have the setup of the following package in your environment.
 

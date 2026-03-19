@@ -90,13 +90,39 @@ describe('<ContractDrawer />', () => {
 
         expect(container).toBeEmptyDOMElement();
     });
-    it('should render PositionsCardLoader component if  contract_info.status || contract_info.is_expired are falsy', () => {
-        mocked_props.contract_info = { status: null, is_expired: 0 };
+    it('should render PositionsCardLoader component if status, isEnded, and is_sold are all falsy', () => {
+        mocked_props.contract_info = { status: null, is_expired: 0, is_sold: 0 };
         render(mockContractDrawer(mocked_props));
 
         expect(screen.getByText('Position Card Loader')).toBeInTheDocument();
         expect(screen.queryByText(contract_drawer_card)).not.toBeInTheDocument();
         expect(screen.queryByText(contract_audit)).not.toBeInTheDocument();
+    });
+    it('should render Contract Drawer card when status is null but is_expired is truthy (Multiplier expired)', () => {
+        mocked_props.contract_info = {
+            currency: 'USD',
+            exit_tick_display_value: '2021.56',
+            status: null,
+            is_expired: 1,
+            is_sold: 0,
+        };
+        render(mockContractDrawer(mocked_props));
+
+        expect(screen.getByText(contract_drawer_card)).toBeInTheDocument();
+        expect(screen.queryByText('Position Card Loader')).not.toBeInTheDocument();
+    });
+    it('should render Contract Drawer card when status is null but is_sold is truthy (Multiplier sold)', () => {
+        mocked_props.contract_info = {
+            currency: 'USD',
+            exit_tick_display_value: '2021.56',
+            status: null,
+            is_expired: 0,
+            is_sold: 1,
+        };
+        render(mockContractDrawer(mocked_props));
+
+        expect(screen.getByText(contract_drawer_card)).toBeInTheDocument();
+        expect(screen.queryByText('Position Card Loader')).not.toBeInTheDocument();
     });
     it('should render component with Contract Drawer card and Contract Audit', () => {
         mocked_props.contract_info = {
@@ -119,26 +145,26 @@ describe('<ContractDrawer />', () => {
         expect(screen.getByText(contract_drawer_card)).toBeInTheDocument();
         expect(screen.queryByText(contract_audit)).not.toBeInTheDocument();
     });
-    it('should render contract_audit if user click on Contract Drawer card on mobile', () => {
+    it('should render contract_audit if user click on Contract Drawer card on mobile', async () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         const { rerender } = render(mockContractDrawer(mocked_props));
         expect(screen.queryByText(contract_audit)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('toggleContractAuditDrawer'));
+        await userEvent.click(screen.getByText('toggleContractAuditDrawer'));
         rerender(mockContractDrawer(mocked_props));
 
         expect(screen.getByText(contract_audit)).toBeInTheDocument();
     });
-    it('contract_audit appeared and then be hidden if user swiped up and then swiped down on mobile', () => {
+    it('contract_audit appeared and then be hidden if user swiped up and then swiped down on mobile', async () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         const { rerender } = render(mockContractDrawer(mocked_props));
         expect(screen.queryByText(contract_audit)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('onSwipedUp'));
+        await userEvent.click(screen.getByText('onSwipedUp'));
         rerender(mockContractDrawer(mocked_props));
         expect(screen.getByText(contract_audit)).toBeInTheDocument();
 
-        userEvent.click(screen.getByText('onSwipedDown'));
+        await userEvent.click(screen.getByText('onSwipedDown'));
         rerender(mockContractDrawer(mocked_props));
         expect(screen.queryByText(contract_audit)).not.toBeInTheDocument();
     });

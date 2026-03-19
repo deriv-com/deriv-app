@@ -1,24 +1,28 @@
-import classNames from 'classnames';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
+import classNames from 'classnames';
+
 import { Div100vhContainer } from '@deriv/components';
 import {
-    isEmptyObject,
     getDurationPeriod,
     getDurationTime,
     getDurationUnitText,
     getEndTime,
+    isEmptyObject,
+    isEnded,
     mobileOSDetect,
-    TContractStore,
     TContractInfo,
+    TContractStore,
 } from '@deriv/shared';
-import ContractAudit from 'App/Components/Elements/ContractAudit';
-import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
-import ContractDrawerCard from './contract-drawer-card';
-import { SwipeableContractAudit } from './swipeable-components';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
+
+import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
+import ContractAudit from 'App/Components/Elements/ContractAudit';
+
+import ContractDrawerCard from './contract-drawer-card';
+import { SwipeableContractAudit } from './swipeable-components';
 
 type TContractDrawerCardProps = React.ComponentProps<typeof ContractDrawerCard>;
 type TContractDrawerProps = RouteComponentProps & {
@@ -90,8 +94,9 @@ const ContractDrawer = observer(
 
         if (isEmptyObject(contract_info)) return null;
 
-        // For non-binary contract, the status is always null, so we check for is_expired in contract_info
-        const fallback_result = contract_info.status || contract_info.is_expired;
+        // For non-binary contracts (e.g. Multipliers), status is always null,
+        // Check isEnded and is_sold to determine if data is ready to display.
+        const fallback_result = contract_info.status || isEnded(contract_info) || contract_info.is_sold;
 
         const body_content = fallback_result ? (
             <React.Fragment>

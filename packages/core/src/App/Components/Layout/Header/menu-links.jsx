@@ -1,14 +1,17 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
-import { Text, Icon } from '@deriv/components';
-import { useDevice } from '@deriv-com/ui';
-import { BinaryLink } from '../../Routes';
-import { observer, useStore } from '@deriv/stores';
-import { routes, startPerformanceEventTimer } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import { useHistory } from 'react-router';
+import { useLocation } from 'react-router-dom';
+
+import { Icon, Text } from '@deriv/components';
+import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import { getPartnersHubUrl, routes, startPerformanceEventTimer } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
+
+import { BinaryLink } from '../../Routes';
+
 import './menu-links.scss';
 
 const MenuItems = ({ id, text, icon, link_to, handleClickCashier }) => {
@@ -36,6 +39,21 @@ const ReportTab = () => (
         text={localize('Reports')}
         link_to={routes.reports}
     />
+);
+
+const PartnersHubTab = () => (
+    <a
+        id='dt_partners_hub_tab'
+        className='header__menu-link'
+        href={getPartnersHubUrl()}
+        target='_blank'
+        rel='noopener noreferrer'
+    >
+        <Text size='m' line_height='xs' title={localize("Partner's Hub")} className='header__menu-link-text'>
+            <Icon icon='IcPartnersHub' className='header__icon' width={20} />
+            {localize("Partner's Hub")}
+        </Text>
+    </a>
 );
 
 const CashierTab = observer(() => {
@@ -97,6 +115,7 @@ const MenuLinks = observer(({ is_traders_hub_routes = false }) => {
         <div key={`menu-links__${i18n.language}`} className='header__menu-links'>
             {isDesktop && !has_wallet && <CashierTab />}
             {!is_traders_hub_routes && !location.pathname.includes(routes.cashier) && <ReportTab />}
+            {isDesktop && <PartnersHubTab />}
         </div>
     );
 });

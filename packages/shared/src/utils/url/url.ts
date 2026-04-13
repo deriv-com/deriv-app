@@ -168,6 +168,9 @@ export const getHubSignupUrl = (redirect_url?: string) => {
     return `${current_domain}/signup${lang}${redirect_param}`;
 };
 
+export const getPartnersHubUrl = () =>
+    process.env.NODE_ENV === 'production' ? deriv_urls.PARTNERS_HUB_PRODUCTION : deriv_urls.PARTNERS_HUB_STAGING;
+
 export const getPath = (route_path: string, parameters = {}) =>
     Object.keys(parameters).reduce(
         (p, name) => p.replace(`:${name}`, parameters[name as keyof typeof parameters]),

@@ -12,7 +12,7 @@ import {
     useP2PSettings,
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
-import { getDomainUrl, getOSNameWithUAParser, getStaticUrl, routes } from '@deriv/shared';
+import { getDomainUrl, getOSNameWithUAParser, getPartnersHubUrl, getStaticUrl, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -399,6 +399,15 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         text={localize("Trader's Hub")}
                                         onClickLink={toggleDrawer}
                                         is_active={route === routes.traders_hub}
+                                    />
+                                </MobileDrawer.Item>
+                                <MobileDrawer.Item>
+                                    <MenuLink
+                                        link_to={getPartnersHubUrl()}
+                                        icon='IcPartnersHub'
+                                        is_open_in_new_tab
+                                        text={localize("Partner's Hub")}
+                                        onClickLink={toggleDrawer}
                                     />
                                 </MobileDrawer.Item>
                                 {route !== routes.traders_hub && (

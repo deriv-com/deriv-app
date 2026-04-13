@@ -527,6 +527,7 @@ import './common/ic-open-positions.svg';
 import './common/ic-open.svg';
 import './common/ic-other-payment-method.svg';
 import './common/ic-pa.svg';
+import './common/ic-partners-hub.svg';
 import './common/ic-passcode.svg';
 import './common/ic-passkey.svg';
 import './common/ic-passport-dashboard.svg';

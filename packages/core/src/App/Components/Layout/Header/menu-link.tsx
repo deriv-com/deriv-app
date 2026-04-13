@@ -15,6 +15,7 @@ type TMenuLink = {
     is_active: boolean;
     is_disabled: boolean;
     is_hidden: boolean;
+    is_open_in_new_tab: boolean;
     link_to: string;
     onClickLink: () => void;
     suffix_icon: string;
@@ -28,6 +29,7 @@ const MenuLink = observer(
         is_active,
         is_disabled,
         is_hidden,
+        is_open_in_new_tab = false,
         link_to = '',
         onClickLink,
         suffix_icon = '',
@@ -129,6 +131,8 @@ const MenuLink = observer(
                         'header__menu-mobile-link--active': is_active,
                     })}
                     href={link_to}
+                    target={is_open_in_new_tab ? '_blank' : undefined}
+                    rel={is_open_in_new_tab ? 'noopener noreferrer' : undefined}
                     data-testid={data_testid}
                 >
                     <Icon className='header__menu-mobile-link-icon' icon={icon} />

@@ -23,6 +23,8 @@ export const deriv_urls = Object.freeze({
     P2P_STAGING: `https://staging-p2p.${domain_url}`,
     BOT_PRODUCTION: `https://dbot.${domain_url}`,
     BOT_STAGING: `https://staging-dbot.${domain_url}`,
+    PARTNERS_HUB_PRODUCTION: `https://hub.${domain_url}/partnershub`,
+    PARTNERS_HUB_STAGING: `https://staging-hub.${domain_url}/partnershub`,
 });
 /**
  * @deprecated Please use 'URLConstants.whatsApp' from '@deriv-com/utils' instead of this.

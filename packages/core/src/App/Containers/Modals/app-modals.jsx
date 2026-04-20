@@ -15,6 +15,7 @@ import TaxInfoModal from './tax-info-modal';
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
 import CooldownWarningModal from './cooldown-warning-modal.jsx';
 import CryptoTransactionProcessingModal from './crypto-transaction-processing-modal';
+import MigrationModal from './migration-modal';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import ReadyToVerifyModal from './ready-to-verify-modal';
@@ -86,6 +87,7 @@ const AppModals = observer(() => {
         has_wallet,
         is_authorize,
         is_logged_in,
+        is_platform_migrated,
         fetchFinancialAssessment,
         setCFDScore,
         landing_company_shortcode: active_account_landing_company,
@@ -338,6 +340,10 @@ const AppModals = observer(() => {
                     needs_update_tax_residence={!!needs_update_tax_residence}
                 />
             );
+    }
+
+    if (is_platform_migrated) {
+        return <MigrationModal />;
     }
 
     return (

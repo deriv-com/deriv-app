@@ -334,6 +334,7 @@ export default class ClientStore extends BaseStore {
             is_bot_allowed: computed,
             clients_country: computed,
             is_eu_country: computed,
+            is_platform_migrated: computed,
             is_options_blocked: computed,
             is_multipliers_only: computed,
             is_proof_of_ownership_enabled: computed,
@@ -1090,6 +1091,10 @@ export default class ClientStore extends BaseStore {
         const country = this.website_status.clients_country;
         if (country) return isEuCountry(country);
         return false;
+    }
+
+    get is_platform_migrated() {
+        return this.website_status?.message === 'migrated';
     }
 
     get is_options_blocked() {

@@ -143,6 +143,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_dxtrade_password_not_set: false,
             is_eu: false,
             is_eu_country: false,
+            is_platform_migrated: false,
             has_residence: false,
             is_financial_account: false,
             is_financial_assessment_needed: false,

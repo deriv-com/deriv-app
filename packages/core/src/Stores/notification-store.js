@@ -343,7 +343,8 @@ export default class NotificationStore extends BaseStore {
         const { is_complete_user_profile_modal_open } = this.root_store.ui;
         const is_server_down = checkServerMaintenance(website_status);
 
-        if (website_status?.message?.length || is_server_down) {
+        const is_platform_migrated = website_status?.message === 'migrated';
+        if (!is_platform_migrated && (website_status?.message?.length || is_server_down)) {
             this.addNotificationMessage(this.client_notifications.site_maintenance);
         } else {
             this.removeNotificationByKey({ key: this.client_notifications.site_maintenance });

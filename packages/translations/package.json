@@ -32,16 +32,16 @@
     "dependencies": {
         "commander": "^3.0.2",
         "crc-32": "^1.2.0",
-        "glob": "^7.1.5",
+        "glob": "^12.0.0",
         "i18next": "^22.4.6",
         "prop-types": "^15.7.2",
         "react": "^17.0.2",
         "react-i18next": "^11.11.0"
     },
     "devDependencies": {
-    "@babel/eslint-parser": "^7.25.1",
+        "@babel/eslint-parser": "^7.25.1",
         "@babel/preset-react": "^7.24.7",
-        "cross-env": "^5.2.0",
-        "@xmldom/xmldom": "^0.8.4"
+        "@xmldom/xmldom": "^0.8.13",
+        "cross-env": "^5.2.0"
     }
 }

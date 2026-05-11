@@ -26,6 +26,7 @@ import AppContents from './Containers/Layout/app-contents.jsx';
 import Footer from './Containers/Layout/footer.jsx';
 import Header from './Containers/Layout/header';
 import AppModals from './Containers/Modals';
+import PositionsBanner from './Containers/PositionsBanner';
 import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
 
@@ -159,6 +160,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     return (
         <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
             <LandscapeBlocker />
+            {!isCallBackPage && <PositionsBanner />}
             {!isCallBackPage && <Header />}
             <ErrorBoundary root_store={store}>
                 <AppContents>

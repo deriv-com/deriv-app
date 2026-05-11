@@ -1,0 +1,68 @@
+$POSITIONS_BANNER_FALLBACK_HEIGHT: 3.6rem;
+
+.positions-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100; // > .header (99)
+
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    min-height: $POSITIONS_BANNER_FALLBACK_HEIGHT;
+    padding: 0.8rem 1.6rem;
+
+    background-color: var(--semantic-color-yellow-solid-surface-normal-lowest);
+    border-bottom: 1px solid var(--general-section-2);
+    color: var(--text-general);
+    font-size: var(--text-size-xs);
+    line-height: 1.4;
+
+    &__icon {
+        flex-shrink: 0;
+    }
+
+    &__text {
+        flex: 1;
+    }
+
+    &__link {
+        color: var(--brand-red-coral);
+        text-decoration: underline;
+        cursor: pointer;
+
+        &:hover,
+        &:focus {
+            color: var(--brand-red-coral);
+            text-decoration: underline;
+        }
+    }
+}
+
+// Layout shift while the banner is mounted: push the fixed header down by
+// the live banner height (var) and shrink the viewport-fitted app-contents
+// and the trader's `.trade-container` accordingly.
+body.has-positions-banner {
+    $banner-h: var(--positions-banner-height, #{$POSITIONS_BANNER_FALLBACK_HEIGHT});
+
+    .header {
+        top: $banner-h;
+    }
+
+    .app-contents {
+        margin-top: calc(#{$HEADER_HEIGHT} + #{$banner-h});
+        height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$banner-h});
+
+        @include mobile-or-tablet-screen {
+            margin-top: calc(#{$MOBILE_HEADER_HEIGHT} + #{$banner-h});
+            height: calc(100% - #{$MOBILE_HEADER_HEIGHT} - #{$banner-h});
+        }
+    }
+
+    // The trader hard-codes its own min-height assuming only header+footer
+    // are reserved; subtract the banner so its top edge isn't clipped.
+    .trade-container {
+        min-height: calc(100vh - 84px - #{$banner-h});
+    }
+}

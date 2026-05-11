@@ -1,0 +1,23 @@
+.positions-banner-modal {
+    &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+        text-align: left;
+    }
+
+    &__title {
+        margin-bottom: 0.4rem;
+    }
+
+    &__description {
+        color: var(--component-textIcon-normal-default);
+    }
+
+    &__cta {
+        width: 100%;
+        margin-top: 1.6rem;
+        border-radius: 2.4rem;
+    }
+}

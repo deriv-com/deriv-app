@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import { LabelPairedCircleInfoSmRegularIcon } from '@deriv/quill-icons';
+import { LabelPairedChevronRightSmBoldIcon, LabelPairedCircleInfoSmRegularIcon } from '@deriv/quill-icons';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
@@ -22,7 +22,7 @@ const PositionsBanner = observer(() => {
     const banner_ref = React.useRef<HTMLDivElement>(null);
 
     const is_trader_route = pathname === routes.trade || pathname.startsWith(`${routes.trade}/`);
-    const should_render = isDesktop && is_trader_route && is_logged_in;
+    const should_render = is_trader_route && is_logged_in;
 
     React.useEffect(() => {
         if (!should_render) return;
@@ -54,6 +54,34 @@ const PositionsBanner = observer(() => {
         // The core history is strictly typed to a route-literal union; positions is a string route.
         history.push(routes.positions as unknown as Parameters<typeof history.push>[0]);
     };
+
+    const handleMobileClick = () => {
+        history.push(routes.trader_positions as unknown as Parameters<typeof history.push>[0]);
+    };
+
+    if (!isDesktop) {
+        return (
+            <button
+                ref={banner_ref as unknown as React.RefObject<HTMLButtonElement>}
+                type='button'
+                className='positions-banner positions-banner--mobile'
+                onClick={handleMobileClick}
+                aria-label='Review open positions before upgrade'
+            >
+                <LabelPairedCircleInfoSmRegularIcon
+                    className='positions-banner__icon'
+                    fill='var(--component-textIcon-normal-prominent)'
+                />
+                <span className='positions-banner__text positions-banner__text--mobile'>
+                    <Localize i18n_default_text='System is upgrading. Close positions by 13 June.' />
+                </span>
+                <LabelPairedChevronRightSmBoldIcon
+                    className='positions-banner__chevron'
+                    fill='var(--component-textIcon-normal-prominent)'
+                />
+            </button>
+        );
+    }
 
     return (
         <div ref={banner_ref} className='positions-banner' role='status' aria-live='polite'>

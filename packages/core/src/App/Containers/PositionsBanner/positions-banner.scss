@@ -25,6 +25,16 @@ $POSITIONS_BANNER_FALLBACK_HEIGHT: 3.6rem;
 
     &__text {
         flex: 1;
+
+        &--mobile {
+            // Match AppV2 mobile banner caption style
+            font-size: var(--text-size-xxs);
+            color: var(--component-textIcon-normal-prominent);
+        }
+    }
+
+    &__chevron {
+        flex-shrink: 0;
     }
 
     &__link {
@@ -37,6 +47,16 @@ $POSITIONS_BANNER_FALLBACK_HEIGHT: 3.6rem;
             color: var(--brand-red-coral);
             text-decoration: underline;
         }
+    }
+
+    &--mobile {
+        // Tappable mobile variant: shorter content, chevron at end, no border-radius
+        min-height: 3.2rem; // Figma: 32px
+        padding: 0 1.6rem;
+        border: none;
+        text-align: start;
+        cursor: pointer;
+        color: var(--component-textIcon-normal-prominent);
     }
 }
 
@@ -64,5 +84,25 @@ body.has-positions-banner {
     // are reserved; subtract the banner so its top edge isn't clipped.
     .trade-container {
         min-height: calc(100vh - 84px - #{$banner-h});
+    }
+
+    // The chart wrapper is `position: fixed; top: calc($HEADER_HEIGHT + 2px)`
+    // — anchored to viewport with the original header height. With the
+    // header pushed down by banner_h, the chart wrapper (and its top widgets
+    // like the symbol/market selector) need the same shift so they're not
+    // hidden behind the relocated header. Height also shrinks by banner_h
+    // so the wrapper doesn't overflow at the bottom.
+    .chart-container__wrapper {
+        top: calc(#{$HEADER_HEIGHT} + 2px + #{$banner-h});
+        height: calc(100svh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$banner-h});
+    }
+
+    // Platform-switcher dropdown (Trader's Hub menu) is `position: fixed;
+    // top: 0` and slides down by `translateY(48px)` (the original header
+    // height). With the header pushed down by banner_h, the panel needs the
+    // same additional shift, else its top is hidden behind the relocated
+    // header.
+    .platform-dropdown--enter-done .platform-dropdown__list {
+        transform: translateY(calc(#{$HEADER_HEIGHT} + #{$banner-h}));
     }
 }

@@ -12,7 +12,7 @@ import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 import CurrentSpot from 'AppV2/Components/CurrentSpot';
 import MarketSelector from 'AppV2/Components/MarketSelector';
 import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
-import PositionsBanner, { PositionsBannerModal } from 'AppV2/Components/PositionsBanner';
+import { PositionsBannerModal } from 'AppV2/Components/PositionsBanner';
 import PurchaseButton from 'AppV2/Components/PurchaseButton';
 import ServiceErrorSheet from 'AppV2/Components/ServiceErrorSheet';
 import TradeErrorSnackbar from 'AppV2/Components/TradeErrorSnackbar';
@@ -116,7 +116,6 @@ const Trade = observer(() => {
 
     return (
         <BottomNav onScroll={onScroll}>
-            {is_logged_in && <PositionsBanner />}
             {symbols.length && trade_types.length && !is_switching ? (
                 <React.Fragment>
                     <div className='trade'>

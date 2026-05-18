@@ -5,11 +5,8 @@ import { useStore } from '@deriv/stores';
 
 const useGetPhoneNumberList = () => {
     const { client } = useStore();
-    const {
-        account_settings,
-        website_status: { clients_country },
-        is_authorize,
-    } = client;
+    const { account_settings, website_status, is_authorize } = client;
+    const clients_country = website_status?.clients_country;
     const {
         data,
         isLoading: isPhoneSettingLoading,

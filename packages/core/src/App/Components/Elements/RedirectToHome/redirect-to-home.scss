@@ -7,7 +7,7 @@
         text-align: left;
 
         @include desktop-screen {
-            padding: 2.4rem;
+            padding: 1rem;
         }
     }
 
@@ -61,7 +61,7 @@
     width: 100%;
     padding: 1.6rem 2.4rem;
     border-top: 0.2rem solid var(--brand-red-coral);
-    background-color: var(--semantic-color-slate-solid-surface-normal-high, var(--general-main-1));
+    background-color: #ffffff;
     box-shadow: 0 -4px 24px 0 rgba(0, 0, 0, 0.16);
 
     @include mobile {

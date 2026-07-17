@@ -1,20 +1,16 @@
 import { StandaloneArrowRightBoldIcon, StandaloneCircleInfoBoldIcon } from '@deriv/quill-icons';
-import { deriv_urls } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Button, Modal, Text } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
 
 type TRedirectToHomePopup = {
     onContinue: () => void;
+    onContactSupport: () => void;
     onDismiss: () => void;
 };
 
-const RedirectToHomePopup = ({ onContinue, onDismiss }: TRedirectToHomePopup) => {
+const RedirectToHomePopup = ({ onContinue, onContactSupport, onDismiss }: TRedirectToHomePopup) => {
     const { isMobile } = useDevice();
-
-    const handleContactSupport = () => {
-        window.open(deriv_urls.HELP_CENTRE, '_blank', 'noopener,noreferrer');
-    };
 
     return (
         <Modal
@@ -76,7 +72,7 @@ const RedirectToHomePopup = ({ onContinue, onDismiss }: TRedirectToHomePopup) =>
                             size='lg'
                             fullWidth
                             label={<Localize i18n_default_text='Contact support' />}
-                            onClick={handleContactSupport}
+                            onClick={onContactSupport}
                         />
                     </div>
                 </div>

@@ -20,10 +20,15 @@ const RedirectToHome = observer(() => {
 
     const is_ready = is_logged_in && is_authorize && is_client_store_initialized;
 
+    const home_url = isProduction() ? deriv_urls.HOME_PRODUCTION : deriv_urls.HOME_STAGING;
+
     const handleContinue = React.useCallback(() => {
-        const home_url = isProduction() ? deriv_urls.HOME_PRODUCTION : deriv_urls.HOME_STAGING;
         window.location.assign(`${home_url}/dashboard/`);
-    }, []);
+    }, [home_url]);
+
+    const handleContactSupport = React.useCallback(() => {
+        window.location.assign(`${home_url}/dashboard/login?live_chat=true`);
+    }, [home_url]);
 
     const handleDismiss = React.useCallback(() => {
         sessionStorage.setItem(REDIRECT_TO_HOME_DISMISSED_KEY, 'true');
@@ -35,7 +40,11 @@ const RedirectToHome = observer(() => {
     return is_dismissed ? (
         <RedirectToHomeBanner onContinue={handleContinue} />
     ) : (
-        <RedirectToHomePopup onContinue={handleContinue} onDismiss={handleDismiss} />
+        <RedirectToHomePopup
+            onContinue={handleContinue}
+            onContactSupport={handleContactSupport}
+            onDismiss={handleDismiss}
+        />
     );
 });
 

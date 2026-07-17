@@ -64,6 +64,12 @@ describe('<RedirectToHome />', () => {
         expect(assign_mock).toHaveBeenCalledWith('https://staging-home.deriv.com/dashboard/');
     });
 
+    it('should redirect to the staging home login with live chat when contact support is clicked', async () => {
+        renderComponent();
+        await userEvent.click(screen.getByText('Contact support'));
+        expect(assign_mock).toHaveBeenCalledWith('https://staging-home.deriv.com/dashboard/login?live_chat=true');
+    });
+
     it('should render the sticky banner (not the popup) when already dismissed in the session', () => {
         sessionStorage.setItem(REDIRECT_TO_HOME_DISMISSED_KEY, 'true');
         renderComponent();

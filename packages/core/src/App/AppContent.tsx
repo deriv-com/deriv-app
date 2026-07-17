@@ -21,6 +21,7 @@ import initHotjar from '../Utils/Hotjar';
 
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
+import RedirectToHome from './Components/Elements/RedirectToHome';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
 import Footer from './Containers/Layout/footer.jsx';
@@ -169,6 +170,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>
+            {!isCallBackPage && <RedirectToHome />}
             <AppToastMessages />
             <Devtools />
         </ThemeProvider>

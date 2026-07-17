@@ -44,7 +44,7 @@ const RedirectToHomePopup = ({ onContinue, onDismiss }: TRedirectToHomePopup) =>
                         />
                     </Text>
                     <Text as='p' size='md'>
-                        <Localize i18n_default_text='Faster, simpler, all in one place — trading, deposits and account management included.' />
+                        <Localize i18n_default_text='Faster, simpler, all in one place. Trading, deposits and account management included.' />
                     </Text>
                     <div className='redirect-to-home-popup__info'>
                         <StandaloneCircleInfoBoldIcon
@@ -54,7 +54,7 @@ const RedirectToHomePopup = ({ onContinue, onDismiss }: TRedirectToHomePopup) =>
                         />
                         <Text as='p' size='sm'>
                             <Localize
-                                i18n_default_text="<0>New here?</0> Your old login won't carry over — signing up takes about a minute."
+                                i18n_default_text="<0>New here?</0> Your old login won't carry over, signing up takes about a minute."
                                 components={[<strong key={0} />]}
                             />
                         </Text>

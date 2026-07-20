@@ -113,7 +113,7 @@ const RedirectToHome = observer(() => {
         logoutAndRedirect(home_dashboard_url);
     }, [home_dashboard_url, logoutAndRedirect, pending_action]);
 
-    // if (!is_ready || isEmptyObject(account_status) || has_unwelcome_status) return null;
+    if (!is_ready || isEmptyObject(account_status) || has_unwelcome_status) return null;
 
     return (
         <RedirectToHomePopup

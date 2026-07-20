@@ -5,7 +5,6 @@ import { observer, useStore } from '@deriv/stores';
 
 import { WS } from 'Services';
 
-import RedirectToHomeBanner from './redirect-to-home-banner';
 import RedirectToHomePopup from './redirect-to-home-popup';
 
 import './redirect-to-home.scss';
@@ -41,10 +40,10 @@ const RedirectToHome = observer(() => {
     const home_support_url = `${home_url}/dashboard/login?live_chat=true`;
 
     const logoutAndRedirect = React.useCallback(
-        async (url: string) => {
+        (url: string) => {
             if (has_redirected_ref.current) return;
             has_redirected_ref.current = true;
-            await logout();
+            logout();
             window.location.assign(url);
         },
         [logout]
@@ -102,23 +101,19 @@ const RedirectToHome = observer(() => {
         setPopupView('error');
     }, [pending_action, requestClientMigration]);
 
-    const handleContactSupport = React.useCallback(async () => {
+    const handleContactSupport = React.useCallback(() => {
         if (pending_action) return;
         setPendingAction('support');
-        await logoutAndRedirect(home_support_url);
+        logoutAndRedirect(home_support_url);
     }, [home_support_url, logoutAndRedirect, pending_action]);
 
-    const handleGoToHome = React.useCallback(async () => {
+    const handleGoToHome = React.useCallback(() => {
         if (pending_action) return;
         setPendingAction('home');
-        await logoutAndRedirect(home_dashboard_url);
+        logoutAndRedirect(home_dashboard_url);
     }, [home_dashboard_url, logoutAndRedirect, pending_action]);
 
-    if (!is_ready || isEmptyObject(account_status)) return null;
-
-    if (has_unwelcome_status) {
-        return <RedirectToHomeBanner onContinue={handleGoToHome} is_loading={is_redirecting} />;
-    }
+    // if (!is_ready || isEmptyObject(account_status) || has_unwelcome_status) return null;
 
     return (
         <RedirectToHomePopup

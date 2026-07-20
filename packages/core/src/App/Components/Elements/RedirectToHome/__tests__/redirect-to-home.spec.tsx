@@ -73,12 +73,18 @@ describe('<RedirectToHome />', () => {
     it('should not render anything when the user is not fully logged in', () => {
         renderComponent(undefined, { is_authorize: false });
         expect(screen.queryByText('Continue to home.deriv.com')).not.toBeInTheDocument();
-        expect(screen.queryByText('Go to home.deriv.com')).not.toBeInTheDocument();
     });
 
     it('should not render anything when account status is not loaded', () => {
         renderComponent(store => {
             store.client.account_status = {};
+        });
+        expect(screen.queryByText('Continue to home.deriv.com')).not.toBeInTheDocument();
+    });
+
+    it('should not render anything when the user has unwelcome_status', () => {
+        renderComponent(undefined, {
+            account_status: { cashier_validation: ['unwelcome_status'] },
         });
         expect(screen.queryByText('Continue to home.deriv.com')).not.toBeInTheDocument();
         expect(screen.queryByText('Go to home.deriv.com')).not.toBeInTheDocument();
@@ -88,18 +94,9 @@ describe('<RedirectToHome />', () => {
         renderComponent();
         expect(screen.getByText('Continue to home.deriv.com')).toBeInTheDocument();
         expect(screen.getByText('Contact support')).toBeInTheDocument();
-        expect(screen.queryByText('Go to home.deriv.com')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByTestId('dt_overlay'));
         expect(screen.getByText('Continue to home.deriv.com')).toBeInTheDocument();
-    });
-
-    it('should render the banner when the user has unwelcome_status', () => {
-        renderComponent(undefined, {
-            account_status: { cashier_validation: ['unwelcome_status'] },
-        });
-        expect(screen.queryByText('Continue to home.deriv.com')).not.toBeInTheDocument();
-        expect(screen.getByText('Go to home.deriv.com')).toBeInTheDocument();
     });
 
     it('should show a loader on the continue button while the migration API is in progress', async () => {
@@ -128,8 +125,9 @@ describe('<RedirectToHome />', () => {
         });
     });
 
-    it('should call client_migration, then logout and redirect after a successful migration', async () => {
+    it('should call client_migration, then logout and redirect without waiting for logout', async () => {
         mockSend.mockResolvedValue({ client_migration: 'parked' });
+        mockLogout.mockImplementation(() => new Promise(() => {}));
         renderComponent();
 
         await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
@@ -139,28 +137,9 @@ describe('<RedirectToHome />', () => {
         });
         expect(screen.getByText("You're all set")).toBeInTheDocument();
 
-        let resolve_logout: (value: { logout: number }) => void = () => undefined;
-        mockLogout.mockImplementation(
-            () =>
-                new Promise(resolve => {
-                    resolve_logout = resolve;
-                })
-        );
-
         await userEvent.click(screen.getByRole('button', { name: 'Go now' }));
 
-        await waitFor(() => {
-            expect(screen.getByTestId('button-loader')).toBeInTheDocument();
-        });
-        expect(screen.queryByText('Go now')).not.toBeInTheDocument();
-
-        await act(async () => {
-            resolve_logout({ logout: 1 });
-        });
-
-        await waitFor(() => {
-            expect(mockLogout).toHaveBeenCalled();
-        });
+        expect(mockLogout).toHaveBeenCalled();
         expect(assign_mock).toHaveBeenCalledWith('https://staging-home.deriv.com/dashboard/');
     });
 
@@ -179,9 +158,7 @@ describe('<RedirectToHome />', () => {
             jest.advanceTimersByTime(REDIRECT_COUNTDOWN_SECONDS * 1000);
         });
 
-        await waitFor(() => {
-            expect(mockLogout).toHaveBeenCalled();
-        });
+        expect(mockLogout).toHaveBeenCalled();
         expect(assign_mock).toHaveBeenCalledWith('https://staging-home.deriv.com/dashboard/');
     });
 
@@ -222,30 +199,16 @@ describe('<RedirectToHome />', () => {
     });
 
     it('should show a loader on contact support and disable continue when contact support is clicked', async () => {
-        let resolve_logout: (value: { logout: number }) => void = () => undefined;
-        mockLogout.mockImplementation(
-            () =>
-                new Promise(resolve => {
-                    resolve_logout = resolve;
-                })
-        );
+        mockLogout.mockImplementation(() => new Promise(() => {}));
         renderComponent();
 
         await userEvent.click(screen.getByRole('button', { name: 'Contact support' }));
 
-        await waitFor(() => {
-            expect(screen.getByTestId('button-loader')).toBeInTheDocument();
-        });
+        expect(screen.getByTestId('button-loader')).toBeInTheDocument();
         expect(screen.queryByText('Contact support')).not.toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Continue to home.deriv.com' })).toBeDisabled();
-
-        await act(async () => {
-            resolve_logout({ logout: 1 });
-        });
-
-        await waitFor(() => {
-            expect(assign_mock).toHaveBeenCalledWith('https://staging-home.deriv.com/dashboard/login?live_chat=true');
-        });
+        expect(mockLogout).toHaveBeenCalled();
+        expect(assign_mock).toHaveBeenCalledWith('https://staging-home.deriv.com/dashboard/login?live_chat=true');
     });
 
     it('should disable contact support while the migration API is in progress', async () => {
@@ -278,21 +241,7 @@ describe('<RedirectToHome />', () => {
         renderComponent();
         await userEvent.click(screen.getByRole('button', { name: 'Contact support' }));
 
-        await waitFor(() => {
-            expect(mockLogout).toHaveBeenCalled();
-        });
+        expect(mockLogout).toHaveBeenCalled();
         expect(assign_mock).toHaveBeenCalledWith('https://staging-home.deriv.com/dashboard/login?live_chat=true');
-    });
-
-    it('should logout and redirect when the banner CTA is clicked', async () => {
-        renderComponent(undefined, {
-            account_status: { cashier_validation: ['unwelcome_status'] },
-        });
-        await userEvent.click(screen.getByRole('button', { name: 'Go to home.deriv.com' }));
-
-        await waitFor(() => {
-            expect(mockLogout).toHaveBeenCalled();
-        });
-        expect(assign_mock).toHaveBeenCalledWith('https://staging-home.deriv.com/dashboard/');
     });
 });

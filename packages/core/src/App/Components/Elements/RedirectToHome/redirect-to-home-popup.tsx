@@ -1,26 +1,115 @@
-import { StandaloneArrowRightBoldIcon, StandaloneCircleCheckBoldIcon } from '@deriv/quill-icons';
+import {
+    StandaloneArrowRightBoldIcon,
+    StandaloneCircleCheckBoldIcon,
+    StandaloneCircleCheckFillIcon,
+    StandalonePasskeyBoldIcon,
+} from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import { Button, Modal, Text } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
 
 type TRedirectToHomePopup = {
+    view: 'prompt' | 'success' | 'error';
+    is_migrating: boolean;
+    is_contacting_support: boolean;
+    is_redirecting: boolean;
+    error_message?: string;
+    countdown: number;
     onContinue: () => void;
     onContactSupport: () => void;
-    onDismiss: () => void;
+    onGoNow: () => void;
 };
 
-const RedirectToHomePopup = ({ onContinue, onContactSupport, onDismiss }: TRedirectToHomePopup) => {
+const RedirectToHomePopup = ({
+    view,
+    is_migrating,
+    is_contacting_support,
+    is_redirecting,
+    error_message,
+    countdown,
+    onContinue,
+    onContactSupport,
+    onGoNow,
+}: TRedirectToHomePopup) => {
     const { isMobile } = useDevice();
+
+    if (view === 'success') {
+        return (
+            <Modal
+                isOpened
+                isMobile={isMobile}
+                showCrossIcon={false}
+                showHandleBar={false}
+                showPrimaryButton={false}
+                hasFooter={false}
+                disableCloseOnOverlay
+                className='redirect-to-home-popup'
+            >
+                <Modal.Body>
+                    <div className='redirect-to-home-popup__content redirect-to-home-popup__content--success'>
+                        <StandaloneCircleCheckFillIcon
+                            iconSize='2xl'
+                            fill='var(--brand-red-coral)'
+                            className='redirect-to-home-popup__success-icon'
+                        />
+                        <Text as='h2' size='lg' bold>
+                            <Localize i18n_default_text="You're all set" />
+                        </Text>
+                        <Text as='p' size='md'>
+                            <Localize
+                                i18n_default_text='Taking you to <0>home.deriv.com</0> in <1>{{seconds}}s</1>.'
+                                values={{ seconds: countdown }}
+                                components={[
+                                    <span key={0} className='redirect-to-home-popup__highlight' />,
+                                    <span key={1} className='redirect-to-home-popup__highlight' />,
+                                ]}
+                            />
+                        </Text>
+                        <div className='redirect-to-home-popup__info'>
+                            <StandalonePasskeyBoldIcon
+                                iconSize='sm'
+                                fill='var(--brand-red-coral)'
+                                className='redirect-to-home-popup__info-icon'
+                            />
+                            <Text as='p' size='sm'>
+                                <Localize
+                                    i18n_default_text="Log in with the <0>same credentials</0> you've always used, no new password needed."
+                                    components={[<strong key={0} />]}
+                                />
+                            </Text>
+                        </div>
+                        <div className='redirect-to-home-popup__actions'>
+                            <Button
+                                variant='primary'
+                                color='coral'
+                                size='lg'
+                                fullWidth
+                                isLoading={is_redirecting}
+                                icon={
+                                    is_redirecting ? undefined : (
+                                        <StandaloneArrowRightBoldIcon iconSize='sm' fill='#FFFFFF' />
+                                    )
+                                }
+                                iconPosition='end'
+                                label={<Localize i18n_default_text='Go now' />}
+                                onClick={onGoNow}
+                            />
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
+        );
+    }
 
     return (
         <Modal
             isOpened
             isMobile={isMobile}
-            showCrossIcon
+            showCrossIcon={false}
             showHandleBar={false}
             showPrimaryButton={false}
             hasFooter={false}
-            toggleModal={onDismiss}
+            disableCloseOnOverlay
             className='redirect-to-home-popup'
         >
             <Modal.Body>
@@ -39,38 +128,56 @@ const RedirectToHomePopup = ({ onContinue, onContactSupport, onDismiss }: TRedir
                             components={[<span key={0} className='redirect-to-home-popup__highlight' />]}
                         />
                     </Text>
-                    <Text as='p' size='md'>
-                        <Localize i18n_default_text='Faster, simpler and packed with new features for trading, deposits and account management.' />
-                    </Text>
-                    <div className='redirect-to-home-popup__info'>
-                        <StandaloneCircleCheckBoldIcon
-                            iconSize='sm'
-                            fill='var(--brand-red-coral)'
-                            className='redirect-to-home-popup__info-icon'
-                        />
-                        <Text as='p' size='sm'>
-                            <Localize
-                                i18n_default_text='<0>Same login, new home.</0> Sign in with your usual Deriv credentials — nothing to set up.'
-                                components={[<strong key={0} />]}
-                            />
+                    {view === 'error' ? (
+                        <Text as='p' size='md'>
+                            {error_message}
                         </Text>
-                    </div>
+                    ) : (
+                        <>
+                            <Text as='p' size='md'>
+                                <Localize i18n_default_text='Faster, simpler and packed with new features for trading, deposits and account management.' />
+                            </Text>
+                            <div className='redirect-to-home-popup__info'>
+                                <StandaloneCircleCheckBoldIcon
+                                    iconSize='sm'
+                                    fill='var(--brand-red-coral)'
+                                    className='redirect-to-home-popup__info-icon'
+                                />
+                                <Text as='p' size='sm'>
+                                    <Localize
+                                        i18n_default_text='<0>Same login, new home.</0> Sign in with your usual Deriv credentials, nothing to set up.'
+                                        components={[<strong key={0} />]}
+                                    />
+                                </Text>
+                            </div>
+                        </>
+                    )}
                     <div className='redirect-to-home-popup__actions'>
+                        {view !== 'error' && (
+                            <Button
+                                variant='primary'
+                                color='coral'
+                                size='lg'
+                                fullWidth
+                                isLoading={is_migrating}
+                                disabled={is_contacting_support}
+                                icon={
+                                    is_migrating ? undefined : (
+                                        <StandaloneArrowRightBoldIcon iconSize='sm' fill='#FFFFFF' />
+                                    )
+                                }
+                                iconPosition='end'
+                                label={<Localize i18n_default_text='Continue to home.deriv.com' />}
+                                onClick={onContinue}
+                            />
+                        )}
                         <Button
-                            variant='primary'
-                            color='coral'
+                            variant={view === 'error' ? 'primary' : 'secondary'}
+                            color={view === 'error' ? 'coral' : 'black'}
                             size='lg'
                             fullWidth
-                            icon={<StandaloneArrowRightBoldIcon iconSize='sm' fill='#FFFFFF' />}
-                            iconPosition='end'
-                            label={<Localize i18n_default_text='Continue to home.deriv.com' />}
-                            onClick={onContinue}
-                        />
-                        <Button
-                            variant='secondary'
-                            color='black'
-                            size='lg'
-                            fullWidth
+                            isLoading={is_contacting_support}
+                            disabled={is_migrating}
                             label={<Localize i18n_default_text='Contact support' />}
                             onClick={onContactSupport}
                         />

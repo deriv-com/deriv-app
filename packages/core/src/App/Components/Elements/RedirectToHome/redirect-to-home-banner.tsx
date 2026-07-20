@@ -4,9 +4,10 @@ import { Button, Text } from '@deriv-com/quill-ui';
 
 type TRedirectToHomeBanner = {
     onContinue: () => void;
+    is_loading?: boolean;
 };
 
-const RedirectToHomeBanner = ({ onContinue }: TRedirectToHomeBanner) => (
+const RedirectToHomeBanner = ({ onContinue, is_loading = false }: TRedirectToHomeBanner) => (
     <div className='redirect-to-home-banner'>
         <div className='redirect-to-home-banner__text-group'>
             <Text as='p' size='md' bold>
@@ -21,7 +22,8 @@ const RedirectToHomeBanner = ({ onContinue }: TRedirectToHomeBanner) => (
             color='coral'
             size='lg'
             className='redirect-to-home-banner__cta'
-            icon={<StandaloneArrowRightBoldIcon iconSize='sm' fill='#FFFFFF' />}
+            isLoading={is_loading}
+            icon={is_loading ? undefined : <StandaloneArrowRightBoldIcon iconSize='sm' fill='#FFFFFF' />}
             iconPosition='end'
             label={<Localize i18n_default_text='Go to home.deriv.com' />}
             onClick={onContinue}

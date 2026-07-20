@@ -9,6 +9,11 @@
         @include desktop-screen {
             padding: 1rem;
         }
+
+        &--success {
+            align-items: center;
+            text-align: center;
+        }
     }
 
     &__eyebrow {
@@ -24,6 +29,10 @@
         color: var(--brand-red-coral);
     }
 
+    &__success-icon {
+        margin-bottom: 0.8rem;
+    }
+
     &__info {
         display: flex;
         align-items: flex-start;
@@ -33,6 +42,7 @@
         border-left: 0.4rem solid var(--brand-red-coral);
         border-radius: 0.4rem;
         background-color: var(--semantic-color-slate-solid-surface-normal-low, rgba(0, 0, 0, 0.24));
+        text-align: left;
     }
 
     &__info-icon {

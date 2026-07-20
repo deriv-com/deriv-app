@@ -1,1 +1,4 @@
-export { default, REDIRECT_TO_HOME_DISMISSED_KEY } from './redirect-to-home';
+import RedirectToHome from './redirect-to-home';
+
+export default RedirectToHome;
+export { REDIRECT_COUNTDOWN_SECONDS } from './redirect-to-home';

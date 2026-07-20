@@ -60,8 +60,9 @@
     gap: 2.4rem;
     width: 100%;
     padding: 1.6rem 2.4rem;
-    border-top: 0.2rem solid var(--brand-red-coral);
-    background-color: #ffffff;
+    border: 0.1rem solid var(--brand-red-coral);
+    border-radius: 0.8rem 0.8rem 0 0;
+    background-color: var(--general-main-1);
     box-shadow: 0 -4px 24px 0 rgba(0, 0, 0, 0.16);
 
     @include mobile {
@@ -75,10 +76,6 @@
         display: flex;
         flex-direction: column;
         gap: 0.2rem;
-    }
-
-    &__highlight {
-        color: var(--text-general);
     }
 
     &__cta {

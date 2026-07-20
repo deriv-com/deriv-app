@@ -13,10 +13,7 @@ const RedirectToHomeBanner = ({ onContinue }: TRedirectToHomeBanner) => (
                 <Localize i18n_default_text='Deriv has a new home' />
             </Text>
             <Text as='p' size='sm' color='var(--text-less-prominent)'>
-                <Localize
-                    i18n_default_text='Faster and simpler at <0>home.deriv.com</0>. New here? Signing up takes a minute.'
-                    components={[<span key={0} className='redirect-to-home-banner__highlight' />]}
-                />
+                <Localize i18n_default_text='Sign in at home.deriv.com with your usual credentials.' />
             </Text>
         </div>
         <Button

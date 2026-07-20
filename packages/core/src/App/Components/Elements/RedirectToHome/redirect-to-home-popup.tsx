@@ -1,4 +1,4 @@
-import { StandaloneArrowRightBoldIcon, StandaloneCircleInfoBoldIcon } from '@deriv/quill-icons';
+import { StandaloneArrowRightBoldIcon, StandaloneCircleCheckBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import { Button, Modal, Text } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
@@ -40,17 +40,17 @@ const RedirectToHomePopup = ({ onContinue, onContactSupport, onDismiss }: TRedir
                         />
                     </Text>
                     <Text as='p' size='md'>
-                        <Localize i18n_default_text='Faster, simpler, all in one place. Trading, deposits and account management included.' />
+                        <Localize i18n_default_text='Faster, simpler and packed with new features for trading, deposits and account management.' />
                     </Text>
                     <div className='redirect-to-home-popup__info'>
-                        <StandaloneCircleInfoBoldIcon
+                        <StandaloneCircleCheckBoldIcon
                             iconSize='sm'
                             fill='var(--brand-red-coral)'
                             className='redirect-to-home-popup__info-icon'
                         />
                         <Text as='p' size='sm'>
                             <Localize
-                                i18n_default_text="<0>New here?</0> Your old login won't carry over, signing up takes about a minute."
+                                i18n_default_text='<0>Same login, new home.</0> Sign in with your usual Deriv credentials — nothing to set up.'
                                 components={[<strong key={0} />]}
                             />
                         </Text>

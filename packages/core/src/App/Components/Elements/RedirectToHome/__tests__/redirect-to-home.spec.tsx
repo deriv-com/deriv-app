@@ -55,6 +55,7 @@ describe('<RedirectToHome />', () => {
         renderComponent();
         expect(screen.getByText('Continue to home.deriv.com')).toBeInTheDocument();
         expect(screen.getByText('Contact support')).toBeInTheDocument();
+        expect(screen.getByText(/Same login, new home/)).toBeInTheDocument();
         expect(screen.queryByText('Go to home.deriv.com')).not.toBeInTheDocument();
     });
 
@@ -75,6 +76,7 @@ describe('<RedirectToHome />', () => {
         renderComponent();
         expect(screen.queryByText('Continue to home.deriv.com')).not.toBeInTheDocument();
         expect(screen.getByText('Go to home.deriv.com')).toBeInTheDocument();
+        expect(screen.getByText('Sign in at home.deriv.com with your usual credentials.')).toBeInTheDocument();
     });
 
     it('should switch to the sticky banner and persist dismissal after the popup is closed', async () => {

@@ -33,6 +33,11 @@
         margin-bottom: 0.8rem;
     }
 
+    &__centered-text {
+        width: 100%;
+        text-align: center;
+    }
+
     &__info {
         display: flex;
         align-items: flex-start;

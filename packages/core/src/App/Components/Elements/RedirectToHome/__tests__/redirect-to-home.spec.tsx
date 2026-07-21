@@ -87,7 +87,6 @@ describe('<RedirectToHome />', () => {
             account_status: { cashier_validation: ['unwelcome_status'] },
         });
         expect(screen.queryByText('Continue to home.deriv.com')).not.toBeInTheDocument();
-        expect(screen.queryByText('Go to home.deriv.com')).not.toBeInTheDocument();
     });
 
     it('should render the non-dismissable popup when unwelcome_status is false', async () => {
@@ -114,7 +113,6 @@ describe('<RedirectToHome />', () => {
         await waitFor(() => {
             expect(screen.getByTestId('button-loader')).toBeInTheDocument();
         });
-        expect(screen.queryByText('Continue to home.deriv.com')).not.toBeInTheDocument();
 
         await act(async () => {
             resolve_migration({ client_migration: 'parked' });
@@ -123,27 +121,182 @@ describe('<RedirectToHome />', () => {
         await waitFor(() => {
             expect(screen.getByText("You're all set")).toBeInTheDocument();
         });
+        expect(screen.getByRole('button', { name: 'Go now' })).toBeDisabled();
     });
 
-    it('should call client_migration, then logout and redirect without waiting for logout', async () => {
+    it('should keep go now disabled for parked status and not redirect before the timer ends', async () => {
         mockSend.mockResolvedValue({ client_migration: 'parked' });
+        renderComponent();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
+
+        await waitFor(() => {
+            expect(screen.getByText("You're all set")).toBeInTheDocument();
+        });
+
+        expect(screen.getByRole('button', { name: 'Go now' })).toBeDisabled();
+        await userEvent.click(screen.getByRole('button', { name: 'Go now' }));
+        expect(mockLogout).not.toHaveBeenCalled();
+        expect(assign_mock).not.toHaveBeenCalled();
+    });
+
+    it('should poll again after the timer and reset when status is still parked', async () => {
+        jest.useFakeTimers();
+        mockSend.mockResolvedValue({ client_migration: 'parked' });
+        renderComponent();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
+
+        await waitFor(() => {
+            expect(screen.getByText("You're all set")).toBeInTheDocument();
+        });
+        expect(mockSend).toHaveBeenCalledTimes(1);
+
+        await act(async () => {
+            jest.advanceTimersByTime(REDIRECT_COUNTDOWN_SECONDS * 1000);
+        });
+
+        await waitFor(() => {
+            expect(mockSend).toHaveBeenCalledTimes(2);
+        });
+        expect(screen.getByRole('button', { name: 'Go now' })).toBeDisabled();
+        expect(assign_mock).not.toHaveBeenCalled();
+    });
+
+    it('should show contact support after two pending rechecks', async () => {
+        jest.useFakeTimers();
+        mockSend.mockResolvedValue({ client_migration: 'parked' });
+        renderComponent();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
+
+        await waitFor(() => {
+            expect(screen.getByText("You're all set")).toBeInTheDocument();
+        });
+
+        await act(async () => {
+            jest.advanceTimersByTime(REDIRECT_COUNTDOWN_SECONDS * 1000);
+        });
+        await waitFor(() => {
+            expect(mockSend).toHaveBeenCalledTimes(2);
+        });
+
+        await act(async () => {
+            jest.advanceTimersByTime(REDIRECT_COUNTDOWN_SECONDS * 1000);
+        });
+        await waitFor(() => {
+            expect(mockSend).toHaveBeenCalledTimes(3);
+        });
+
+        expect(
+            screen.getByText('This seems to be taking a while. Contact support for assistance.')
+        ).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Contact support' })).toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'Go now' })).not.toBeInTheDocument();
+        expect(assign_mock).not.toHaveBeenCalled();
+
+        await act(async () => {
+            jest.advanceTimersByTime(REDIRECT_COUNTDOWN_SECONDS * 1000);
+        });
+        expect(mockSend).toHaveBeenCalledTimes(3);
+    });
+
+    it('should enable go now and redirect when poll returns already_migrated', async () => {
+        jest.useFakeTimers();
+        mockSend
+            .mockResolvedValueOnce({ client_migration: 'parked' })
+            .mockResolvedValueOnce({ client_migration: 'already_migrated' });
         mockLogout.mockImplementation(() => new Promise(() => {}));
         renderComponent();
 
         await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
 
         await waitFor(() => {
-            expect(mockSend).toHaveBeenCalledWith({ client_migration: 1 });
+            expect(screen.getByText("You're all set")).toBeInTheDocument();
         });
-        expect(screen.getByText("You're all set")).toBeInTheDocument();
 
+        await act(async () => {
+            jest.advanceTimersByTime(REDIRECT_COUNTDOWN_SECONDS * 1000);
+        });
+
+        await waitFor(() => {
+            expect(mockSend).toHaveBeenCalledTimes(2);
+        });
+        expect(mockLogout).toHaveBeenCalled();
+        expect(assign_mock).toHaveBeenCalledWith('https://staging-home.deriv.com/dashboard/');
+    });
+
+    it('should redirect when poll returns any non-MigrationParkError error', async () => {
+        jest.useFakeTimers();
+        mockSend.mockResolvedValueOnce({ client_migration: 'parked' }).mockResolvedValueOnce({
+            error: { code: 'AuthorizationRequired', message: 'Please log in.' },
+        });
+        mockLogout.mockImplementation(() => new Promise(() => {}));
+        renderComponent();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
+
+        await waitFor(() => {
+            expect(screen.getByText("You're all set")).toBeInTheDocument();
+        });
+
+        await act(async () => {
+            jest.advanceTimersByTime(REDIRECT_COUNTDOWN_SECONDS * 1000);
+        });
+
+        await waitFor(() => {
+            expect(mockSend).toHaveBeenCalledTimes(2);
+        });
+        expect(mockLogout).toHaveBeenCalled();
+        expect(assign_mock).toHaveBeenCalledWith('https://staging-home.deriv.com/dashboard/');
+    });
+
+    it('should show the error content when poll returns MigrationParkError', async () => {
+        jest.useFakeTimers();
+        mockSend.mockResolvedValueOnce({ client_migration: 'parked' }).mockResolvedValueOnce({
+            error: {
+                code: 'MigrationParkError',
+                message: 'Sorry, we could not schedule your account migration.',
+            },
+        });
+        renderComponent();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
+
+        await waitFor(() => {
+            expect(screen.getByText("You're all set")).toBeInTheDocument();
+        });
+
+        await act(async () => {
+            jest.advanceTimersByTime(REDIRECT_COUNTDOWN_SECONDS * 1000);
+        });
+
+        await waitFor(() => {
+            expect(screen.getByText('Sorry, we could not schedule your account migration.')).toBeInTheDocument();
+        });
+        expect(screen.getByRole('button', { name: 'Contact support' })).toBeInTheDocument();
+        expect(assign_mock).not.toHaveBeenCalled();
+    });
+
+    it('should enable go now immediately when initial status is already_migrated', async () => {
+        mockSend.mockResolvedValue({ client_migration: 'already_migrated' });
+        mockLogout.mockImplementation(() => new Promise(() => {}));
+        renderComponent();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
+
+        await waitFor(() => {
+            expect(screen.getByText("You're all set")).toBeInTheDocument();
+        });
+
+        expect(screen.getByRole('button', { name: 'Go now' })).toBeEnabled();
         await userEvent.click(screen.getByRole('button', { name: 'Go now' }));
 
         expect(mockLogout).toHaveBeenCalled();
         expect(assign_mock).toHaveBeenCalledWith('https://staging-home.deriv.com/dashboard/');
     });
 
-    it('should logout and redirect when the success countdown reaches zero', async () => {
+    it('should logout and redirect when already_migrated countdown reaches zero', async () => {
         jest.useFakeTimers();
         mockSend.mockResolvedValue({ client_migration: 'already_migrated' });
         renderComponent();
@@ -182,7 +335,7 @@ describe('<RedirectToHome />', () => {
         expect(screen.queryByText('Continue to home.deriv.com')).not.toBeInTheDocument();
     });
 
-    it('should treat a successful retry as migration success', async () => {
+    it('should treat a successful retry as migration success with go now disabled for in-progress', async () => {
         mockSend
             .mockResolvedValueOnce({
                 error: { code: 'MigrationParkError', message: 'Temporary failure' },
@@ -196,6 +349,7 @@ describe('<RedirectToHome />', () => {
             expect(mockSend).toHaveBeenCalledTimes(2);
         });
         expect(screen.getByText("You're all set")).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Go now' })).toBeDisabled();
     });
 
     it('should show a loader on contact support and disable continue when contact support is clicked', async () => {
@@ -209,32 +363,6 @@ describe('<RedirectToHome />', () => {
         expect(screen.getByRole('button', { name: 'Continue to home.deriv.com' })).toBeDisabled();
         expect(mockLogout).toHaveBeenCalled();
         expect(assign_mock).toHaveBeenCalledWith('https://staging-home.deriv.com/dashboard/login?live_chat=true');
-    });
-
-    it('should disable contact support while the migration API is in progress', async () => {
-        let resolve_migration: (value: { client_migration: string }) => void = () => undefined;
-        mockSend.mockImplementation(
-            () =>
-                new Promise(resolve => {
-                    resolve_migration = resolve;
-                })
-        );
-        renderComponent();
-
-        await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
-
-        await waitFor(() => {
-            expect(screen.getByTestId('button-loader')).toBeInTheDocument();
-        });
-        expect(screen.getByRole('button', { name: 'Contact support' })).toBeDisabled();
-
-        await act(async () => {
-            resolve_migration({ client_migration: 'parked' });
-        });
-
-        await waitFor(() => {
-            expect(screen.getByText("You're all set")).toBeInTheDocument();
-        });
     });
 
     it('should logout and redirect to live chat when contact support is clicked', async () => {

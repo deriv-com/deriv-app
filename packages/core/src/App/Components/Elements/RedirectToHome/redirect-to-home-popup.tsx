@@ -13,6 +13,7 @@ type TRedirectToHomePopup = {
     is_migrating: boolean;
     is_contacting_support: boolean;
     is_redirecting: boolean;
+    is_checking_status: boolean;
     is_go_now_enabled: boolean;
     is_migration_delayed: boolean;
     error_message?: string;
@@ -27,6 +28,7 @@ const RedirectToHomePopup = ({
     is_migrating,
     is_contacting_support,
     is_redirecting,
+    is_checking_status,
     is_go_now_enabled,
     is_migration_delayed,
     error_message,
@@ -105,10 +107,10 @@ const RedirectToHomePopup = ({
                                     color='coral'
                                     size='lg'
                                     fullWidth
-                                    isLoading={is_redirecting}
-                                    disabled={!is_go_now_enabled && !is_redirecting}
+                                    isLoading={is_go_now_enabled && is_redirecting}
+                                    disabled={!is_go_now_enabled || is_checking_status}
                                     icon={
-                                        is_redirecting ? undefined : (
+                                        is_go_now_enabled && is_redirecting ? undefined : (
                                             <StandaloneArrowRightBoldIcon iconSize='sm' fill='#FFFFFF' />
                                         )
                                     }

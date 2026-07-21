@@ -13,6 +13,8 @@ type TRedirectToHomePopup = {
     is_migrating: boolean;
     is_contacting_support: boolean;
     is_redirecting: boolean;
+    is_go_now_enabled: boolean;
+    is_migration_delayed: boolean;
     error_message?: string;
     countdown: number;
     onContinue: () => void;
@@ -25,6 +27,8 @@ const RedirectToHomePopup = ({
     is_migrating,
     is_contacting_support,
     is_redirecting,
+    is_go_now_enabled,
+    is_migration_delayed,
     error_message,
     countdown,
     onContinue,
@@ -52,48 +56,67 @@ const RedirectToHomePopup = ({
                             fill='var(--brand-red-coral)'
                             className='redirect-to-home-popup__success-icon'
                         />
-                        <Text as='h2' size='lg' bold>
+                        <Text as='h2' size='lg' bold className='redirect-to-home-popup__centered-text'>
                             <Localize i18n_default_text="You're all set" />
                         </Text>
-                        <Text as='p' size='md'>
-                            <Localize
-                                i18n_default_text='Taking you to <0>home.deriv.com</0> in <1>{{seconds}}s</1>.'
-                                values={{ seconds: countdown }}
-                                components={[
-                                    <span key={0} className='redirect-to-home-popup__highlight' />,
-                                    <span key={1} className='redirect-to-home-popup__highlight' />,
-                                ]}
-                            />
-                        </Text>
-                        <div className='redirect-to-home-popup__info'>
-                            <StandalonePasskeyBoldIcon
-                                iconSize='sm'
-                                fill='var(--brand-red-coral)'
-                                className='redirect-to-home-popup__info-icon'
-                            />
-                            <Text as='p' size='sm'>
+                        <Text as='p' size='md' className='redirect-to-home-popup__centered-text'>
+                            {is_migration_delayed ? (
+                                <Localize i18n_default_text='This seems to be taking a while. Contact support for assistance.' />
+                            ) : (
                                 <Localize
-                                    i18n_default_text="Log in with the <0>same credentials</0> you've always used, no new password needed."
-                                    components={[<strong key={0} />]}
+                                    i18n_default_text='Taking you to <0>home.deriv.com</0> in <1>{{seconds}}s</1>.'
+                                    values={{ seconds: countdown }}
+                                    components={[
+                                        <span key={0} className='redirect-to-home-popup__highlight' />,
+                                        <span key={1} className='redirect-to-home-popup__highlight' />,
+                                    ]}
                                 />
-                            </Text>
-                        </div>
+                            )}
+                        </Text>
+                        {!is_migration_delayed && (
+                            <div className='redirect-to-home-popup__info'>
+                                <StandalonePasskeyBoldIcon
+                                    iconSize='sm'
+                                    fill='var(--brand-red-coral)'
+                                    className='redirect-to-home-popup__info-icon'
+                                />
+                                <Text as='p' size='sm'>
+                                    <Localize
+                                        i18n_default_text="Log in with the <0>same credentials</0> you've always used, no new password needed."
+                                        components={[<strong key={0} />]}
+                                    />
+                                </Text>
+                            </div>
+                        )}
                         <div className='redirect-to-home-popup__actions'>
-                            <Button
-                                variant='primary'
-                                color='coral'
-                                size='lg'
-                                fullWidth
-                                isLoading={is_redirecting}
-                                icon={
-                                    is_redirecting ? undefined : (
-                                        <StandaloneArrowRightBoldIcon iconSize='sm' fill='#FFFFFF' />
-                                    )
-                                }
-                                iconPosition='end'
-                                label={<Localize i18n_default_text='Go now' />}
-                                onClick={onGoNow}
-                            />
+                            {is_migration_delayed ? (
+                                <Button
+                                    variant='primary'
+                                    color='coral'
+                                    size='lg'
+                                    fullWidth
+                                    isLoading={is_contacting_support}
+                                    label={<Localize i18n_default_text='Contact support' />}
+                                    onClick={onContactSupport}
+                                />
+                            ) : (
+                                <Button
+                                    variant='primary'
+                                    color='coral'
+                                    size='lg'
+                                    fullWidth
+                                    isLoading={is_redirecting}
+                                    disabled={!is_go_now_enabled && !is_redirecting}
+                                    icon={
+                                        is_redirecting ? undefined : (
+                                            <StandaloneArrowRightBoldIcon iconSize='sm' fill='#FFFFFF' />
+                                        )
+                                    }
+                                    iconPosition='end'
+                                    label={<Localize i18n_default_text='Go now' />}
+                                    onClick={onGoNow}
+                                />
+                            )}
                         </div>
                     </div>
                 </Modal.Body>

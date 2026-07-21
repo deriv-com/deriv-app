@@ -21,6 +21,11 @@ type TMigrationResponse = {
     error?: { code?: string; message?: string };
 };
 
+const getMigrationStatus = (response: TMigrationResponse | null | undefined): string | undefined => {
+    const status = response?.client_migration;
+    return typeof status === 'string' ? status : undefined;
+};
+
 const isSuccessfulMigration = (status: unknown): status is (typeof SUCCESS_MIGRATION_STATUSES)[number] =>
     typeof status === 'string' &&
     SUCCESS_MIGRATION_STATUSES.includes(status as (typeof SUCCESS_MIGRATION_STATUSES)[number]);
@@ -33,7 +38,7 @@ const isMigrationParkError = (error?: { code?: string }) => error?.code === 'Mig
 
 /** On recheck, any error other than MigrationParkError means migration finished and the account left v1. */
 const isMigrationComplete = (response: TMigrationResponse) =>
-    response.client_migration === 'already_migrated' ||
+    getMigrationStatus(response) === 'already_migrated' ||
     (Boolean(response.error) && !isMigrationParkError(response.error));
 
 const RedirectToHome = observer(() => {
@@ -51,6 +56,8 @@ const RedirectToHome = observer(() => {
 
     const has_redirected_ref = React.useRef(false);
     const is_go_now_enabled_ref = React.useRef(false);
+    const is_waiting_for_migration_ref = React.useRef(false);
+    const is_checking_status_ref = React.useRef(false);
     const recheck_count_ref = React.useRef(0);
 
     const is_ready = is_logged_in && is_authorize && is_client_store_initialized;
@@ -77,6 +84,7 @@ const RedirectToHome = observer(() => {
     }, []);
 
     const completeMigrationAndRedirect = React.useCallback(() => {
+        is_waiting_for_migration_ref.current = false;
         setIsGoNowEnabled(true);
         is_go_now_enabled_ref.current = true;
         setPendingAction('home');
@@ -84,33 +92,42 @@ const RedirectToHome = observer(() => {
     }, [home_dashboard_url, logoutAndRedirect]);
 
     const checkMigrationStatus = React.useCallback(async () => {
-        if (has_redirected_ref.current) return;
+        if (has_redirected_ref.current || is_checking_status_ref.current) return;
 
+        is_checking_status_ref.current = true;
         setIsCheckingStatus(true);
-        const response = await requestClientMigration();
-        setIsCheckingStatus(false);
 
-        if (isMigrationParkError(response.error)) {
-            setErrorMessage(response.error?.message || '');
-            setPendingAction(null);
-            setPopupView('error');
-            return;
-        }
+        try {
+            const response = await requestClientMigration();
+            const status = getMigrationStatus(response);
 
-        if (isMigrationComplete(response)) {
-            completeMigrationAndRedirect();
-            return;
-        }
-
-        if (isPendingMigration(response.client_migration)) {
-            recheck_count_ref.current += 1;
-
-            if (recheck_count_ref.current >= MAX_MIGRATION_RECHECKS) {
-                setIsMigrationDelayed(true);
+            if (isMigrationParkError(response.error)) {
+                is_waiting_for_migration_ref.current = false;
+                setErrorMessage(response.error?.message || '');
+                setPendingAction(null);
+                setPopupView('error');
                 return;
             }
 
-            setPollCycle(cycle => cycle + 1);
+            if (isMigrationComplete(response)) {
+                completeMigrationAndRedirect();
+                return;
+            }
+
+            if (isPendingMigration(status)) {
+                recheck_count_ref.current += 1;
+
+                if (recheck_count_ref.current >= MAX_MIGRATION_RECHECKS) {
+                    is_waiting_for_migration_ref.current = false;
+                    setIsMigrationDelayed(true);
+                    return;
+                }
+
+                setPollCycle(cycle => cycle + 1);
+            }
+        } finally {
+            is_checking_status_ref.current = false;
+            setIsCheckingStatus(false);
         }
     }, [completeMigrationAndRedirect, requestClientMigration]);
 
@@ -133,17 +150,26 @@ const RedirectToHome = observer(() => {
     }, [is_migration_delayed, popup_view, poll_cycle]);
 
     React.useEffect(() => {
-        if (popup_view !== 'success' || countdown !== 0 || has_redirected_ref.current || is_migration_delayed) {
+        if (
+            popup_view !== 'success' ||
+            countdown !== 0 ||
+            has_redirected_ref.current ||
+            is_migration_delayed ||
+            is_checking_status_ref.current
+        ) {
+            return;
+        }
+
+        // Pending parked / migration_in_progress: always recheck, never redirect on timer alone.
+        if (is_waiting_for_migration_ref.current) {
+            checkMigrationStatus();
             return;
         }
 
         if (is_go_now_enabled_ref.current) {
             setPendingAction('home');
             logoutAndRedirect(home_dashboard_url);
-            return;
         }
-
-        checkMigrationStatus();
     }, [checkMigrationStatus, countdown, home_dashboard_url, is_migration_delayed, logoutAndRedirect, popup_view]);
 
     const handleContinue = React.useCallback(async () => {
@@ -158,8 +184,15 @@ const RedirectToHome = observer(() => {
             response = await requestClientMigration();
         }
 
-        if (isSuccessfulMigration(response?.client_migration)) {
-            const can_go_now = response.client_migration === 'already_migrated';
+        const status = getMigrationStatus(response);
+
+        if (isSuccessfulMigration(status)) {
+            const is_pending = isPendingMigration(status);
+            const can_go_now = status === 'already_migrated';
+
+            is_waiting_for_migration_ref.current = is_pending;
+            recheck_count_ref.current = 0;
+            setIsMigrationDelayed(false);
             setIsGoNowEnabled(can_go_now);
             is_go_now_enabled_ref.current = can_go_now;
             setPendingAction(null);
@@ -179,7 +212,7 @@ const RedirectToHome = observer(() => {
     }, [home_support_url, logoutAndRedirect, pending_action]);
 
     const handleGoToHome = React.useCallback(() => {
-        if (pending_action || !is_go_now_enabled) return;
+        if (pending_action || !is_go_now_enabled || is_waiting_for_migration_ref.current) return;
         setPendingAction('home');
         logoutAndRedirect(home_dashboard_url);
     }, [home_dashboard_url, is_go_now_enabled, logoutAndRedirect, pending_action]);
@@ -191,7 +224,8 @@ const RedirectToHome = observer(() => {
             view={popup_view}
             is_migrating={is_migrating}
             is_contacting_support={is_contacting_support}
-            is_redirecting={is_redirecting || is_checking_status}
+            is_redirecting={is_redirecting}
+            is_checking_status={is_checking_status}
             is_go_now_enabled={is_go_now_enabled}
             is_migration_delayed={is_migration_delayed}
             error_message={error_message}

@@ -89,13 +89,44 @@ describe('<RedirectToHome />', () => {
         expect(screen.queryByText('Continue to home.deriv.com')).not.toBeInTheDocument();
     });
 
-    it('should render the non-dismissable popup when unwelcome_status is false', async () => {
+    it('should render the popup when unwelcome_status is false and keep it open on overlay click', async () => {
         renderComponent();
         expect(screen.getByText('Continue to home.deriv.com')).toBeInTheDocument();
         expect(screen.getByText('Contact support')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_redirect_to_home_popup_close')).toBeInTheDocument();
 
         await userEvent.click(screen.getByTestId('dt_overlay'));
         expect(screen.getByText('Continue to home.deriv.com')).toBeInTheDocument();
+    });
+
+    it('should show a non-dismissable banner after the popup is closed', async () => {
+        renderComponent();
+
+        await userEvent.click(screen.getByTestId('dt_redirect_to_home_popup_close'));
+
+        expect(screen.queryByText('Continue to home.deriv.com')).not.toBeInTheDocument();
+        expect(screen.getByTestId('dt_redirect_to_home_banner')).toBeInTheDocument();
+        expect(screen.getByText('Deriv has a new home')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Faster, simpler and packed with new features for trading, deposits and account management. Sign in with your usual Deriv credentials, nothing to set up.'
+            )
+        ).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Contact support' })).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_redirect_to_home_banner_close')).not.toBeInTheDocument();
+    });
+
+    it('should logout and redirect to live chat when banner contact support is clicked', async () => {
+        mockLogout.mockImplementation(() => new Promise(() => {}));
+        renderComponent();
+
+        await userEvent.click(screen.getByTestId('dt_redirect_to_home_popup_close'));
+        await userEvent.click(screen.getByRole('button', { name: 'Contact support' }));
+
+        await waitFor(() => {
+            expect(mockLogout).toHaveBeenCalled();
+            expect(assign_mock).toHaveBeenCalledWith(expect.stringMatching(/\/dashboard\/login\?live_chat=true$/));
+        });
     });
 
     it('should show a loader on the continue button while the migration API is in progress', async () => {

@@ -4,6 +4,7 @@ import {
     StandaloneCircleCheckBoldIcon,
     StandaloneCircleCheckFillIcon,
     StandalonePasskeyBoldIcon,
+    StandaloneXmarkBoldIcon,
 } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import { Button, Modal, Text } from '@deriv-com/quill-ui';
@@ -16,12 +17,26 @@ type TRedirectToHomePopup = {
     is_redirecting: boolean;
     is_go_now_enabled: boolean;
     is_migration_delayed: boolean;
+    can_close: boolean;
     error_message?: string;
     countdown: number;
     onContinue: () => void;
     onContactSupport: () => void;
     onGoNow: () => void;
+    onClose: () => void;
 };
+
+const PopupCloseButton = ({ onClose }: { onClose: () => void }) => (
+    <button
+        type='button'
+        className='redirect-to-home-popup__close'
+        onClick={onClose}
+        aria-label='Close'
+        data-testid='dt_redirect_to_home_popup_close'
+    >
+        <StandaloneXmarkBoldIcon iconSize='sm' fill='var(--text-general)' />
+    </button>
+);
 
 const RedirectToHomePopup = ({
     view,
@@ -30,11 +45,13 @@ const RedirectToHomePopup = ({
     is_redirecting,
     is_go_now_enabled,
     is_migration_delayed,
+    can_close,
     error_message,
     countdown,
     onContinue,
     onContactSupport,
     onGoNow,
+    onClose,
 }: TRedirectToHomePopup) => {
     const { isMobile } = useDevice();
 
@@ -52,6 +69,7 @@ const RedirectToHomePopup = ({
             >
                 <Modal.Body>
                     <div className='redirect-to-home-popup__content redirect-to-home-popup__content--success'>
+                        {can_close && <PopupCloseButton onClose={onClose} />}
                         {is_migration_delayed ? (
                             <DerivLightSettingsInProgressIcon
                                 height='120px'
@@ -143,6 +161,7 @@ const RedirectToHomePopup = ({
         >
             <Modal.Body>
                 <div className='redirect-to-home-popup__content'>
+                    {can_close && <PopupCloseButton onClose={onClose} />}
                     <Text
                         as='p'
                         size='sm'

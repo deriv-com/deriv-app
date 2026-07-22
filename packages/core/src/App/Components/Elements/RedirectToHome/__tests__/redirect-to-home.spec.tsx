@@ -99,7 +99,7 @@ describe('<RedirectToHome />', () => {
         expect(screen.getByText('Continue to home.deriv.com')).toBeInTheDocument();
     });
 
-    it('should show the dismissable banner after the popup is closed', async () => {
+    it('should show a non-dismissable banner after the popup is closed', async () => {
         renderComponent();
 
         await userEvent.click(screen.getByTestId('dt_redirect_to_home_popup_close'));
@@ -113,16 +113,7 @@ describe('<RedirectToHome />', () => {
             )
         ).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Contact support' })).toBeInTheDocument();
-    });
-
-    it('should dismiss the banner when its close icon is clicked', async () => {
-        renderComponent();
-
-        await userEvent.click(screen.getByTestId('dt_redirect_to_home_popup_close'));
-        await userEvent.click(screen.getByTestId('dt_redirect_to_home_banner_close'));
-
-        expect(screen.queryByTestId('dt_redirect_to_home_banner')).not.toBeInTheDocument();
-        expect(screen.queryByText('Continue to home.deriv.com')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('dt_redirect_to_home_banner_close')).not.toBeInTheDocument();
     });
 
     it('should logout and redirect to live chat when banner contact support is clicked', async () => {

@@ -1,4 +1,3 @@
-import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import { Button, Text } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
@@ -6,23 +5,13 @@ import { useDevice } from '@deriv-com/ui';
 type TRedirectToHomeBanner = {
     is_contacting_support: boolean;
     onContactSupport: () => void;
-    onDismiss: () => void;
 };
 
-const RedirectToHomeBanner = ({ is_contacting_support, onContactSupport, onDismiss }: TRedirectToHomeBanner) => {
+const RedirectToHomeBanner = ({ is_contacting_support, onContactSupport }: TRedirectToHomeBanner) => {
     const { isMobile } = useDevice();
 
     return (
         <div className='redirect-to-home-banner' data-testid='dt_redirect_to_home_banner'>
-            <button
-                type='button'
-                className='redirect-to-home-banner__close'
-                onClick={onDismiss}
-                aria-label='Close'
-                data-testid='dt_redirect_to_home_banner_close'
-            >
-                <StandaloneXmarkBoldIcon iconSize='sm' fill='var(--text-general)' />
-            </button>
             <div className='redirect-to-home-banner__content'>
                 <div className='redirect-to-home-banner__text'>
                     <Text as='h2' size='md' bold>

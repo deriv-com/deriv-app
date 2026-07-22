@@ -43,7 +43,6 @@ const RedirectToHome = observer(() => {
 
     const [popup_view, setPopupView] = React.useState<TPopupView>('prompt');
     const [is_popup_open, setIsPopupOpen] = React.useState(true);
-    const [is_banner_dismissed, setIsBannerDismissed] = React.useState(false);
     const [pending_action, setPendingAction] = React.useState<'migrate' | 'support' | 'home' | null>(null);
     const [error_message, setErrorMessage] = React.useState('');
     const [countdown, setCountdown] = React.useState(REDIRECT_COUNTDOWN_SECONDS);
@@ -207,10 +206,6 @@ const RedirectToHome = observer(() => {
         setIsPopupOpen(false);
     }, [can_close_popup]);
 
-    const handleDismissBanner = React.useCallback(() => {
-        setIsBannerDismissed(true);
-    }, []);
-
     if (!is_ready || isEmptyObject(account_status) || has_unwelcome_status) return null;
 
     if (is_popup_open) {
@@ -233,14 +228,8 @@ const RedirectToHome = observer(() => {
         );
     }
 
-    if (is_banner_dismissed) return null;
-
     return (
-        <RedirectToHomeBanner
-            is_contacting_support={is_contacting_support}
-            onContactSupport={handleContactSupport}
-            onDismiss={handleDismissBanner}
-        />
+        <RedirectToHomeBanner is_contacting_support={is_contacting_support} onContactSupport={handleContactSupport} />
     );
 });
 

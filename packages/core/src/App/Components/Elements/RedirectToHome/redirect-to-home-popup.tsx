@@ -1,4 +1,5 @@
 import {
+    DerivLightSettingsInProgressIcon,
     StandaloneArrowRightBoldIcon,
     StandaloneCircleCheckBoldIcon,
     StandaloneCircleCheckFillIcon,
@@ -51,14 +52,19 @@ const RedirectToHomePopup = ({
             >
                 <Modal.Body>
                     <div className='redirect-to-home-popup__content redirect-to-home-popup__content--success'>
-                        <StandaloneCircleCheckFillIcon
-                            iconSize='2xl'
-                            fill='var(--brand-red-coral)'
-                            className='redirect-to-home-popup__success-icon'
-                        />
-                        <Text as='h2' size='lg' bold className='redirect-to-home-popup__centered-text'>
-                            <Localize i18n_default_text="You're all set" />
-                        </Text>
+                        {is_migration_delayed ? (
+                            <DerivLightSettingsInProgressIcon
+                                height='120px'
+                                width='120px'
+                                className='redirect-to-home-popup__success-icon'
+                            />
+                        ) : (
+                            <StandaloneCircleCheckFillIcon
+                                iconSize='2xl'
+                                fill='var(--brand-red-coral)'
+                                className='redirect-to-home-popup__success-icon'
+                            />
+                        )}
                         <Text as='p' size='md' className='redirect-to-home-popup__centered-text'>
                             {is_migration_delayed ? (
                                 <Localize i18n_default_text='This seems to be taking a while. Contact support for assistance.' />

@@ -119,7 +119,7 @@ describe('<RedirectToHome />', () => {
         });
 
         await waitFor(() => {
-            expect(screen.getByText("You're all set")).toBeInTheDocument();
+            expect(screen.getByText(/Taking you to/)).toBeInTheDocument();
         });
         expect(screen.getByRole('button', { name: 'Go now' })).toBeDisabled();
     });
@@ -131,7 +131,7 @@ describe('<RedirectToHome />', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
 
         await waitFor(() => {
-            expect(screen.getByText("You're all set")).toBeInTheDocument();
+            expect(screen.getByText(/Taking you to/)).toBeInTheDocument();
         });
 
         expect(screen.getByRole('button', { name: 'Go now' })).toBeDisabled();
@@ -148,7 +148,7 @@ describe('<RedirectToHome />', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
 
         await waitFor(() => {
-            expect(screen.getByText("You're all set")).toBeInTheDocument();
+            expect(screen.getByText(/Taking you to/)).toBeInTheDocument();
         });
         expect(mockSend).toHaveBeenCalledTimes(1);
 
@@ -171,7 +171,7 @@ describe('<RedirectToHome />', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
 
         await waitFor(() => {
-            expect(screen.getByText("You're all set")).toBeInTheDocument();
+            expect(screen.getByText(/Taking you to/)).toBeInTheDocument();
         });
 
         await act(async () => {
@@ -212,7 +212,7 @@ describe('<RedirectToHome />', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
 
         await waitFor(() => {
-            expect(screen.getByText("You're all set")).toBeInTheDocument();
+            expect(screen.getByText(/Taking you to/)).toBeInTheDocument();
         });
 
         await act(async () => {
@@ -237,7 +237,7 @@ describe('<RedirectToHome />', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
 
         await waitFor(() => {
-            expect(screen.getByText("You're all set")).toBeInTheDocument();
+            expect(screen.getByText(/Taking you to/)).toBeInTheDocument();
         });
 
         await act(async () => {
@@ -264,7 +264,7 @@ describe('<RedirectToHome />', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
 
         await waitFor(() => {
-            expect(screen.getByText("You're all set")).toBeInTheDocument();
+            expect(screen.getByText(/Taking you to/)).toBeInTheDocument();
         });
 
         await act(async () => {
@@ -286,7 +286,7 @@ describe('<RedirectToHome />', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
 
         await waitFor(() => {
-            expect(screen.getByText("You're all set")).toBeInTheDocument();
+            expect(screen.getByText(/Taking you to/)).toBeInTheDocument();
         });
 
         expect(screen.getByRole('button', { name: 'Go now' })).toBeEnabled();
@@ -304,7 +304,7 @@ describe('<RedirectToHome />', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Continue to home.deriv.com' }));
 
         await waitFor(() => {
-            expect(screen.getByText("You're all set")).toBeInTheDocument();
+            expect(screen.getByText(/Taking you to/)).toBeInTheDocument();
         });
 
         await act(async () => {
@@ -348,7 +348,7 @@ describe('<RedirectToHome />', () => {
         await waitFor(() => {
             expect(mockSend).toHaveBeenCalledTimes(2);
         });
-        expect(screen.getByText("You're all set")).toBeInTheDocument();
+        expect(screen.getByText(/Taking you to/)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Go now' })).toBeDisabled();
     });
 

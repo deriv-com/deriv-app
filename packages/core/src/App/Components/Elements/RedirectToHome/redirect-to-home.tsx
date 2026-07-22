@@ -5,6 +5,7 @@ import { observer, useStore } from '@deriv/stores';
 
 import { WS } from 'Services';
 
+import RedirectToHomeBanner from './redirect-to-home-banner';
 import RedirectToHomePopup from './redirect-to-home-popup';
 
 import './redirect-to-home.scss';
@@ -41,6 +42,8 @@ const RedirectToHome = observer(() => {
     const { account_status, is_logged_in, is_authorize, is_client_store_initialized, logout } = client;
 
     const [popup_view, setPopupView] = React.useState<TPopupView>('prompt');
+    const [is_popup_open, setIsPopupOpen] = React.useState(true);
+    const [is_banner_dismissed, setIsBannerDismissed] = React.useState(false);
     const [pending_action, setPendingAction] = React.useState<'migrate' | 'support' | 'home' | null>(null);
     const [error_message, setErrorMessage] = React.useState('');
     const [countdown, setCountdown] = React.useState(REDIRECT_COUNTDOWN_SECONDS);
@@ -58,6 +61,7 @@ const RedirectToHome = observer(() => {
     const is_migrating = pending_action === 'migrate';
     const is_contacting_support = pending_action === 'support';
     const is_redirecting = pending_action === 'home';
+    const can_close_popup = !pending_action && !is_checking_status;
     const home_url = isProduction() ? deriv_urls.HOME_PRODUCTION : deriv_urls.HOME_STAGING;
     const home_dashboard_url = `${home_url}/dashboard/`;
     const home_support_url = `${home_url}/dashboard/login?live_chat=true`;
@@ -115,7 +119,7 @@ const RedirectToHome = observer(() => {
     }, [completeMigrationAndRedirect, requestClientMigration]);
 
     React.useEffect(() => {
-        if (popup_view !== 'success' || is_migration_delayed) return undefined;
+        if (!is_popup_open || popup_view !== 'success' || is_migration_delayed) return undefined;
 
         setCountdown(REDIRECT_COUNTDOWN_SECONDS);
 
@@ -130,10 +134,16 @@ const RedirectToHome = observer(() => {
         }, 1000);
 
         return () => window.clearInterval(timer_id);
-    }, [is_migration_delayed, popup_view, poll_cycle]);
+    }, [is_migration_delayed, is_popup_open, popup_view, poll_cycle]);
 
     React.useEffect(() => {
-        if (popup_view !== 'success' || countdown !== 0 || has_redirected_ref.current || is_migration_delayed) {
+        if (
+            !is_popup_open ||
+            popup_view !== 'success' ||
+            countdown !== 0 ||
+            has_redirected_ref.current ||
+            is_migration_delayed
+        ) {
             return;
         }
 
@@ -144,7 +154,15 @@ const RedirectToHome = observer(() => {
         }
 
         checkMigrationStatus();
-    }, [checkMigrationStatus, countdown, home_dashboard_url, is_migration_delayed, logoutAndRedirect, popup_view]);
+    }, [
+        checkMigrationStatus,
+        countdown,
+        home_dashboard_url,
+        is_migration_delayed,
+        is_popup_open,
+        logoutAndRedirect,
+        popup_view,
+    ]);
 
     const handleContinue = React.useCallback(async () => {
         if (pending_action) return;
@@ -184,21 +202,44 @@ const RedirectToHome = observer(() => {
         logoutAndRedirect(home_dashboard_url);
     }, [home_dashboard_url, is_go_now_enabled, logoutAndRedirect, pending_action]);
 
+    const handleClosePopup = React.useCallback(() => {
+        if (!can_close_popup) return;
+        setIsPopupOpen(false);
+    }, [can_close_popup]);
+
+    const handleDismissBanner = React.useCallback(() => {
+        setIsBannerDismissed(true);
+    }, []);
+
     if (!is_ready || isEmptyObject(account_status) || has_unwelcome_status) return null;
 
+    if (is_popup_open) {
+        return (
+            <RedirectToHomePopup
+                view={popup_view}
+                is_migrating={is_migrating}
+                is_contacting_support={is_contacting_support}
+                is_redirecting={is_redirecting || is_checking_status}
+                is_go_now_enabled={is_go_now_enabled}
+                is_migration_delayed={is_migration_delayed}
+                can_close={can_close_popup}
+                error_message={error_message}
+                countdown={countdown}
+                onContinue={handleContinue}
+                onContactSupport={handleContactSupport}
+                onGoNow={handleGoToHome}
+                onClose={handleClosePopup}
+            />
+        );
+    }
+
+    if (is_banner_dismissed) return null;
+
     return (
-        <RedirectToHomePopup
-            view={popup_view}
-            is_migrating={is_migrating}
+        <RedirectToHomeBanner
             is_contacting_support={is_contacting_support}
-            is_redirecting={is_redirecting || is_checking_status}
-            is_go_now_enabled={is_go_now_enabled}
-            is_migration_delayed={is_migration_delayed}
-            error_message={error_message}
-            countdown={countdown}
-            onContinue={handleContinue}
             onContactSupport={handleContactSupport}
-            onGoNow={handleGoToHome}
+            onDismiss={handleDismissBanner}
         />
     );
 });
